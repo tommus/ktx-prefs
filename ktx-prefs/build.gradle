@@ -1,0 +1,44 @@
+//region Startup Plugins
+
+apply plugin: "com.android.library"
+
+//endregion
+
+//region Android
+
+android {
+
+  //region Compile Options
+
+  compileSdkVersion deps.build_versions.compile_sdk
+
+  //endregion
+
+  //region Default Config
+
+  defaultConfig {
+    minSdkVersion deps.build_versions.min_sdk
+    targetSdkVersion deps.build_versions.target_sdk
+  }
+
+  //endregion
+}
+
+//region Dependencies
+
+dependencies {
+
+  //region Library Modules
+
+  api project(":ktx-prefs-runtime")
+
+  //endregion
+}
+
+//endregion
+
+//region Publication
+
+apply from: rootProject.file("gradle/gradle-mvn-push.gradle")
+
+//endregion

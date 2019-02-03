@@ -1,2 +1,3 @@
+include ":ktx-prefs"
 include ":ktx-prefs-annotations"
 include ":ktx-prefs-runtime"
