@@ -1,0 +1,88 @@
+//region Dependencies
+
+def deps = [:]
+ext.deps = deps
+
+//endregion
+
+//region Versions
+
+def versions = [:]
+versions.android_gradle_plugin = "3.2.1"
+versions.android_runtime = "4.1.1.4"
+versions.commons_io = "2.6"
+versions.commons_lang = "3.8.1"
+versions.freemarker = "2.3.28"
+versions.kotlin = "1.3.20"
+versions.material = "1.0.0"
+deps.versions = versions
+
+//endregion
+
+//region Android
+
+def android = [:]
+android.runtime = "com.google.android:android:$versions.android_runtime"
+deps.android = android
+
+//endregion
+
+//region Build
+
+def build = [:]
+build.android_gradle_plugin = "com.android.tools.build:gradle:$versions.android_gradle_plugin"
+build.kotlin_gradle_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+deps.build = build
+
+def build_versions = [:]
+build_versions.compile_sdk = 28
+build_versions.min_sdk = 14
+build_versions.target_sdk = 28
+deps.build_versions = build_versions
+
+//endregion
+
+//region Kotlin
+
+def kotlin = [:]
+kotlin.stdlib_jdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$versions.kotlin"
+deps.kotlin = kotlin
+
+//endregion
+
+//region Miscellaneous
+
+def misc = [:]
+misc.commons_io = "commons-io:commons-io:$versions.commons_io"
+misc.commons_lang = "org.apache.commons:commons-lang3:$versions.commons_lang"
+deps.misc = misc
+
+//endregion
+
+//region Template
+
+def template = [:]
+template.freemarker = "org.freemarker:freemarker:$versions.freemarker"
+deps.template = template
+
+//endregion
+
+//region Ui
+
+def ui = [:]
+ui.material = "com.google.android.material:material:$versions.material"
+deps.ui = ui
+
+//endregion
+
+//region Repositories
+
+static def addRepos(RepositoryHandler handler) {
+    handler.google()
+    handler.jcenter()
+    handler.mavenCentral()
+}
+
+ext.addRepos = this.&addRepos
+
+//endregion
