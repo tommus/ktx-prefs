@@ -1,3 +1,15 @@
+//region Library
+
 include ":ktx-prefs"
 include ":ktx-prefs-annotations"
 include ":ktx-prefs-runtime"
+
+//endregion
+
+//region Samples
+
+include ":kotlin-simple"
+
+project(":kotlin-simple").projectDir = new File(rootDir, "samples/kotlin-simple")
+
+//endregion

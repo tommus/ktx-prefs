@@ -1,14 +1,14 @@
 //region Build Script
 
 buildscript {
-    repositories {
-        apply from: "versions.gradle"
-        addRepos(repositories)
-    }
-    dependencies {
-        classpath deps.build.android_gradle_plugin
-        classpath deps.build.kotlin_gradle_plugin
-    }
+  repositories {
+    apply from: "versions.gradle"
+    addRepos(repositories)
+  }
+  dependencies {
+    classpath deps.build.android_gradle_plugin
+    classpath deps.build.kotlin_gradle_plugin
+  }
 }
 
 //endregion
@@ -16,9 +16,9 @@ buildscript {
 //region All Projects
 
 allprojects {
-    repositories {
-        addRepos(repositories)
-    }
+  repositories {
+    addRepos(repositories)
+  }
 }
 
 //endregion
@@ -26,8 +26,8 @@ allprojects {
 //region Sub Projects
 
 subprojects { project ->
-    group = GROUP
-    version = VERSION_NAME
+  group = GROUP
+  version = VERSION_NAME
 }
 
 //endregion
