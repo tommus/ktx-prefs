@@ -1,0 +1,69 @@
+//region Startup Plugins
+
+apply plugin: "com.android.library"
+apply plugin: 'kotlin-android'
+
+//endregion
+
+//region Android
+
+android {
+
+  //region Compile Options
+
+  compileSdkVersion deps.build_versions.compile_sdk
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  //endregion
+
+  //region Default Config
+
+  defaultConfig {
+    minSdkVersion deps.build_versions.min_sdk
+    targetSdkVersion deps.build_versions.target_sdk
+    javaCompileOptions {
+      annotationProcessorOptions {
+        includeCompileClasspath = true
+      }
+    }
+  }
+
+  //endregion
+}
+
+//endregion
+
+//region Dependencies
+
+dependencies {
+
+  //region Application Modules
+
+  api project(":ktx-prefs-annotations")
+
+  //endregion
+
+  //region Android Runtime
+
+  compileOnly deps.android.runtime
+
+  //endregion
+
+  //region Kotlin
+
+  implementation deps.kotlin.stdlib_jdk8
+
+  //endregion
+}
+
+//endregion
+
+//region Publication
+
+apply from: rootProject.file("gradle/gradle-mvn-push.gradle")
+
+//endregion
