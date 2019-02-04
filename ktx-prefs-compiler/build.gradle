@@ -1,0 +1,45 @@
+//region Startup Plugins
+
+apply plugin: "java-library"
+
+//endregion
+
+//region Compatibility
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+//endregion
+
+//region Dependencies
+
+dependencies {
+
+    //region Application Modules
+
+    implementation project(":ktx-prefs-annotations")
+
+    //endregion
+
+    //region Kotlin
+
+    implementation deps.kotlin.stdlib_jdk8
+
+    //endregion
+
+    //region Miscellaneous
+
+    implementation deps.template.freemarker
+    implementation deps.misc.commons_io
+    implementation deps.misc.commons_lang
+
+    //endregion
+}
+
+//endregion
+
+//region Publication
+
+apply from: rootProject.file("gradle/gradle-mvn-push.gradle")
+
+//endregion
