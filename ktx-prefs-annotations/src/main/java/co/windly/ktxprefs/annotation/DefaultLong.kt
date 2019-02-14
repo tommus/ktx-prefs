@@ -1,4 +1,4 @@
-package co.windly.kotlinxprefs.annotations
+package co.windly.kotlinxprefs.annotation
 
 @Target(AnnotationTarget.FIELD)
 annotation class DefaultLong(

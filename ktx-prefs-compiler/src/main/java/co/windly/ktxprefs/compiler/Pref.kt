@@ -12,7 +12,7 @@ class Pref internal constructor(
 
   //region Preference Name
 
-  val prefName: String,
+  val prefName: String?,
 
   //endregion
 
@@ -24,7 +24,7 @@ class Pref internal constructor(
 
   //region Default Value
 
-  val defaultValue: String,
+  val defaultValue: String?,
 
   //endregion
 
