@@ -66,6 +66,8 @@ class PrefsProcessor : AbstractProcessor() {
     const val EDITOR_WRAPPER = "EditorWrapper"
 
     const val CONSTANTS = "Constants"
+
+    const val EXTENTION = "Ext"
   }
 
   //endregion
@@ -161,7 +163,7 @@ class PrefsProcessor : AbstractProcessor() {
         val prefsAnnotation = classElement.getAnnotation(Prefs::class.java)
 
         // Retrieve file name.
-        val filename = when(prefsAnnotation.value.isEmpty()) {
+        val filename = when (prefsAnnotation.value.isEmpty()) {
           false -> prefsAnnotation.value
           true -> prefsAnnotation.fileName
         }
@@ -175,11 +177,21 @@ class PrefsProcessor : AbstractProcessor() {
         arguments["prefWrapperClassName"] = "${classElement.simpleName}${SuffixConfiguration.PREFS_WRAPPER}"
         arguments["editorWrapperClassName"] = "${classElement.simpleName}${SuffixConfiguration.EDITOR_WRAPPER}"
         arguments["constantsClassName"] = "${classElement.simpleName}${SuffixConfiguration.CONSTANTS}"
+        arguments["extensionClassName"] = "${classElement.simpleName}"
         arguments["prefList"] = prefList
 
         // Make directory for generated files.
         val packageDirectory = File(kaptTargetDirectory, getPackagePath(packageElement))
           .also { it.mkdirs() }
+
+        // Create shared preferences wrapper extensions.
+        File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.EXTENTION}.kt").apply {
+          writer(Charset.defaultCharset())
+            .use { writer ->
+              val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.EXTENSIONS)
+              template.process(arguments, writer)
+            }
+        }
 
         // Create shared preferences wrapper.
         File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.PREFS_WRAPPER}.kt").apply {
@@ -301,6 +313,8 @@ class PrefsProcessor : AbstractProcessor() {
   }
 
   private object FreemarkerTemplate {
+
+    const val EXTENSIONS = "extensions.ftl"
 
     const val PREFS_WRAPPER = "shared_preferences_wrapper.ftl"
 

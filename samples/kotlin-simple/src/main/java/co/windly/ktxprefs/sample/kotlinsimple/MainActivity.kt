@@ -3,7 +3,7 @@ package co.windly.ktxprefs.sample.kotlinsimple
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import co.windly.ktxprefs.sample.kotlinsimple.cache.UserCachePrefs
+import co.windly.ktxprefs.sample.kotlinsimple.cache.requireUserCache
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
@@ -47,7 +47,7 @@ class MainActivity : Activity() {
   private fun initializeUserCache() {
 
     // Get access to shared preferences wrapper.
-    val cache = UserCachePrefs.get(this)
+    val cache = requireUserCache()
 
     // Put a single value (apply() is automatically called).
     cache
@@ -91,7 +91,7 @@ class MainActivity : Activity() {
   private fun observeFirstName() {
 
     // Get access to shared preferences wrapper.
-    val cache = UserCachePrefs.get(this)
+    val cache = requireUserCache()
 
     // Subscribe to first name changes.
     cache
@@ -123,7 +123,7 @@ class MainActivity : Activity() {
   private fun observeLastName() {
 
     // Get access to shared preferences wrapper.
-    val cache = UserCachePrefs.get(this)
+    val cache = requireUserCache()
 
     // Subscribe to last name changes.
     cache
@@ -155,7 +155,7 @@ class MainActivity : Activity() {
   private fun observePassword() {
 
     // Get access to shared preferences wrapper.
-    val cache = UserCachePrefs.get(this)
+    val cache = requireUserCache()
 
     // Subscribe to password changes.
     cache
@@ -187,7 +187,7 @@ class MainActivity : Activity() {
   private fun observeActive() {
 
     // Get access to shared preferences wrapper.
-    val cache = UserCachePrefs.get(this)
+    val cache = requireUserCache()
 
     // Subscribe to active changes.
     cache
