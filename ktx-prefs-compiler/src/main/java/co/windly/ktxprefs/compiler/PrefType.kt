@@ -35,37 +35,37 @@ enum class PrefType constructor(
 
   BOOLEAN(
     qualifiedName = Boolean::class.java.name,
-    simpleName = Boolean::class.java.simpleName,
+    simpleName = "Boolean",
     methodName = "Boolean",
     defaultValue = "false"
   ),
 
   FLOAT(
     qualifiedName = Float::class.java.name,
-    simpleName = Float::class.java.simpleName,
+    simpleName = "Float",
     methodName = "Float",
     defaultValue = "0.0f"
   ),
 
   INTEGER(
     qualifiedName = Int::class.java.name,
-    simpleName = Int::class.java.simpleName,
+    simpleName = "Int",
     methodName = "Int",
     defaultValue = "0"
   ),
 
   LONG(
     qualifiedName = Long::class.java.name,
-    simpleName = Long::class.java.simpleName,
+    simpleName = "Long",
     methodName = "Long",
     defaultValue = "0L"
   ),
 
   STRING(
     qualifiedName = String::class.java.name,
-    simpleName = String::class.java.simpleName,
+    simpleName = "String",
     methodName = "String",
-    defaultValue = ""
+    defaultValue = "\"\""
   ),
 
   STRING_SET(

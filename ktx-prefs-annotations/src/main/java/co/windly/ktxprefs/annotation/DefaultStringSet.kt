@@ -1,4 +1,4 @@
-package co.windly.kotlinxprefs.annotation
+package co.windly.ktxprefs.annotation
 
 @Target(AnnotationTarget.FIELD)
 annotation class DefaultStringSet(

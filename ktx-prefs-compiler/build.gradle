@@ -4,13 +4,6 @@ apply plugin: "kotlin"
 
 //endregion
 
-//region Compatibility
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
-
-//endregion
-
 //region Dependencies
 
 dependencies {

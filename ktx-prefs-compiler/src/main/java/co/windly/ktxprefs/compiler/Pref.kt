@@ -30,7 +30,7 @@ class Pref internal constructor(
 
   //region Comment
 
-  val comment: String
+  val comment: String?
 
   //endregion
 

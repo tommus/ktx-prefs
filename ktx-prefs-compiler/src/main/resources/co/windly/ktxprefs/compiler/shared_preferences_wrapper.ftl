@@ -6,69 +6,53 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-<#if !disableNullable>
-import androidx.annotation.Nullable;
-</#if><#t>
 
-import co.windly.androidxprefs.SharedPreferencesWrapper;
+import co.windly.ktxprefs.runtime.SharedPreferencesWrapper;
 
 <#if comment??>
 /**
  * ${comment?trim}
  */
 </#if>
-public class ${prefWrapperClassName} extends SharedPreferencesWrapper {
+@Suppress("MemberVisibilityCanBePrivate", "unused")
+class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWrapper(wrapped) {
 
-    //region Singleton
+  //region Companion
 
-    private static ${prefWrapperClassName} INSTANCE;
+    companion object {
 
-    public static ${prefWrapperClassName} get(Context context) {
+      //region Wrapped
 
-        // Ensure singleton instance creation.
-        if (INSTANCE == null) {
-            SharedPreferences wrapped = getWrapped(context);
-            INSTANCE = new ${prefWrapperClassName}(wrapped);
+      fun get(context: Context): ${prefWrapperClassName} =
+        instance ?: synchronized(this) {
+          instance ?: ${prefWrapperClassName}(getWrapped(context)).also { instance = it }
         }
 
-        // Return wrapper instance.
-        return INSTANCE;
+      private fun getWrapped(context: Context): SharedPreferences =
+        context.getSharedPreferences("${fileName}", 0)
+
+      @Volatile
+      private var instance: ${prefWrapperClassName}? = null
+
+      //endregion
     }
 
     //endregion
 
-    //region Factory Method
+    //region Edit
 
-    protected static SharedPreferences getWrapped(Context context) {
-<#if fileName??>
-        return context
-            .getSharedPreferences("${fileName}", ${fileMode});
-<#else>
-        return PreferenceManager
-            .getDefaultSharedPreferences(context);
-</#if>
-    }
+    override fun edit(): UserCacheEditorWrapper =
+      UserCacheEditorWrapper(super.edit())
 
     //endregion
 
-    //region Constructor
+    //region Clear
 
-    public ${prefWrapperClassName}(SharedPreferences wrapped) {
-        super(wrapped);
+    override fun clear() {
+      edit().clear()
     }
 
     //endregion
-
-    //region Edition
-
-    @SuppressLint("CommitPrefEdits")
-    public ${editorWrapperClassName} edit() {
-        return new ${editorWrapperClassName}(super.edit());
-    }
-
-    //endregion
-
-    //region Shared Preferences
 
 <#list prefList as pref>
     //region ${pref.fieldName?cap_first}
@@ -79,12 +63,8 @@ public class ${prefWrapperClassName} extends SharedPreferencesWrapper {
      * ${pref.comment?trim}
      */
     </#if><#t>
-    <#if !disableNullable && pref.defaultValue == "null">
-    @Nullable
-    </#if><#t>
-    public ${pref.type.simpleName} get${pref.fieldName?cap_first}() {
-        return is${pref.fieldName?cap_first}();
-    }
+    fun get${pref.fieldName?cap_first}(): ${pref.type.simpleName} =
+      is${pref.fieldName?cap_first}();
     </#if>
 
     <#if pref.comment??>
@@ -92,68 +72,45 @@ public class ${prefWrapperClassName} extends SharedPreferencesWrapper {
      * ${pref.comment?trim}
      */
     </#if><#t>
-    <#if !disableNullable && pref.defaultValue == "null">
-    @Nullable
-    </#if><#t>
-    public ${pref.type.simpleName} <#if pref.type == "BOOLEAN">is<#else>get</#if>${pref.fieldName?cap_first}() {
-
-        // In case if no value has been stored - return default one.
-        if (!contains(${constantsClassName}.KEY_${pref.fieldNameUpperCase})) {
-            return ${constantsClassName}.DEFAULT_${pref.fieldNameUpperCase};
-        }
-
-        // Otherwise return stored shared preference.
-        return get${pref.type.methodName}(${constantsClassName}.KEY_${pref.fieldNameUpperCase}, ${pref.type.defaultValue});
-    }
+    fun <#if pref.type == "BOOLEAN">is<#else>get</#if>${pref.fieldName?cap_first}(): ${pref.type.simpleName} =
+      when(!contains(${constantsClassName}.KEY_${pref.fieldNameUpperCase})) {
+        true -> ${constantsClassName}.DEFAULT_${pref.fieldNameUpperCase}
+        false -> get${pref.type.methodName}(${constantsClassName}.KEY_${pref.fieldNameUpperCase}, ${pref.type.defaultValue})
+      }
 
     <#if pref.comment??>
     /**
      * ${pref.comment?trim}
      */
     </#if><#t>
-    public boolean contains${pref.fieldName?cap_first}() {
-
-        // Return whether given shared preference has been stored.
-        return contains(${constantsClassName}.KEY_${pref.fieldNameUpperCase});
-    }
+    fun contains${pref.fieldName?cap_first}(): Boolean =
+      contains(${constantsClassName}.KEY_${pref.fieldNameUpperCase});
 
     <#if pref.comment??>
     /**
      * ${pref.comment?trim}
      */
     </#if><#t>
-    public ${prefWrapperClassName} put${pref.fieldName?cap_first}(${pref.type.simpleName} ${pref.fieldName}) {
-
-        // Edit and immediately persist shared preference.
-        edit().put${pref.fieldName?cap_first}(${pref.fieldName}).apply();
-        return this;
-    }
+    fun put${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): ${prefWrapperClassName} =
+      edit().put${pref.fieldName?cap_first}(${pref.fieldName}).apply().let { this }
 
     <#if pref.comment??>
     /**
      * ${pref.comment?trim}
      */
     </#if><#t>
-    public ${prefWrapperClassName} set${pref.fieldName?cap_first}(${pref.type.simpleName} ${pref.fieldName}) {
-
-        // Edit and immediately persist shared preference.
-        return put${pref.fieldName?cap_first}(${pref.fieldName});
-    }
+    fun set${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): ${prefWrapperClassName} =
+      put${pref.fieldName?cap_first}(${pref.fieldName})
 
     <#if pref.comment??>
     /**
      * ${pref.comment?trim}
      */
     </#if><#t>
-    public ${prefWrapperClassName} remove${pref.fieldName?cap_first}() {
-
-        // Truncate persisted shared preference.
-        edit().remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase}).apply();
-        return this;
-    }
+    fun remove${pref.fieldName?cap_first}(): ${prefWrapperClassName} =
+        edit().remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase}).apply().let { this }
 
     //endregion
 
 </#list>
-    //endregion
 }

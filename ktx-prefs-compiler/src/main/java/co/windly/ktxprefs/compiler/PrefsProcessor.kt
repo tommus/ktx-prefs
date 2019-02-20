@@ -1,12 +1,13 @@
 package co.windly.ktxprefs.compiler
 
-import co.windly.kotlinxprefs.annotation.DefaultBoolean
-import co.windly.kotlinxprefs.annotation.DefaultFloat
-import co.windly.kotlinxprefs.annotation.DefaultInt
-import co.windly.kotlinxprefs.annotation.DefaultLong
-import co.windly.kotlinxprefs.annotation.DefaultString
-import co.windly.kotlinxprefs.annotation.DefaultStringSet
-import co.windly.kotlinxprefs.annotation.Name
+import co.windly.ktxprefs.annotation.DefaultBoolean
+import co.windly.ktxprefs.annotation.DefaultFloat
+import co.windly.ktxprefs.annotation.DefaultInt
+import co.windly.ktxprefs.annotation.DefaultLong
+import co.windly.ktxprefs.annotation.DefaultString
+import co.windly.ktxprefs.annotation.DefaultStringSet
+import co.windly.ktxprefs.annotation.Name
+import co.windly.ktxprefs.annotation.Prefs
 import co.windly.ktxprefs.compiler.PrefType.BOOLEAN
 import co.windly.ktxprefs.compiler.PrefType.FLOAT
 import co.windly.ktxprefs.compiler.PrefType.INTEGER
@@ -16,10 +17,12 @@ import co.windly.ktxprefs.compiler.PrefsProcessor.FreemarkerConfiguration.BASE_P
 import co.windly.ktxprefs.compiler.PrefsProcessor.FreemarkerConfiguration.MAJOR_VERSION
 import co.windly.ktxprefs.compiler.PrefsProcessor.FreemarkerConfiguration.MICRO_VERSION
 import co.windly.ktxprefs.compiler.PrefsProcessor.FreemarkerConfiguration.MINOR_VERSION
+import co.windly.ktxprefs.compiler.PrefsProcessor.ProcessorConfiguration
 import freemarker.template.Configuration
 import freemarker.template.Version
 import org.apache.commons.lang3.StringEscapeUtils.escapeJava
-import org.apache.commons.lang3.StringUtils.wrap
+import java.io.File
+import java.nio.charset.Charset
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.RoundEnvironment
 import javax.annotation.processing.SupportedAnnotationTypes
@@ -32,8 +35,6 @@ import javax.lang.model.element.TypeElement
 import javax.lang.model.element.VariableElement
 import javax.lang.model.type.TypeMirror
 import javax.lang.model.util.ElementFilter
-import javax.tools.Diagnostic.Kind.ERROR
-import javax.tools.Diagnostic.Kind.NOTE
 
 @SupportedAnnotationTypes(
   value = [
@@ -48,11 +49,15 @@ import javax.tools.Diagnostic.Kind.NOTE
     "co.windly.ktxprefs.annotation.Prefs"
   ]
 )
-@SupportedOptions(value = ["kapt.kotlin.generated"])
+@SupportedOptions(value = [ProcessorConfiguration.OPTION_KAPT_KOTLIN])
 @SupportedSourceVersion(value = RELEASE_8)
 class PrefsProcessor : AbstractProcessor() {
 
   //region Annotation Processor Configuration
+
+  internal object ProcessorConfiguration {
+    const val OPTION_KAPT_KOTLIN = "kapt.kotlin.generated"
+  }
 
   private object SuffixConfiguration {
 
@@ -67,18 +72,30 @@ class PrefsProcessor : AbstractProcessor() {
 
   //region Process
 
-  override fun process(annotations: MutableSet<out TypeElement>, environment: RoundEnvironment): Boolean {
+  override fun process(annotations: MutableSet<out TypeElement>?, environment: RoundEnvironment): Boolean {
 
     // Print a message that annotation processor started.
-    processingEnv.messager.printMessage(
-      NOTE,
-      "Ktx Prefs Annotation Processor had started."
-    )
+    processingEnv.messager.noteMessage { "Ktx Prefs Annotation Processor had started." }
+
+    // Stop processing in case if there are no annotations declared.
+    if (annotations == null) {
+      return false
+    }
+
+    // Check whether Kotlin files target directory is accessible.
+    val kaptTargetDirectory = processingEnv.options[ProcessorConfiguration.OPTION_KAPT_KOTLIN] ?: run {
+
+      // Log an error message.
+      processingEnv.messager.errorMessage { "Cannot access Kotlin files target directory." }
+
+      // Stop processing in case if an error occurred.
+      return false
+    }
 
     annotations.forEach { annotation ->
 
       // Do nothing if incorrect annotated class has been passed to processor.
-      if (annotation.qualifiedName.contentEquals("co.windly.ktxprefs.annotations.Prefs").not()) {
+      if (annotation.qualifiedName.contentEquals("co.windly.ktxprefs.annotation.Prefs").not()) {
         return@forEach
       }
 
@@ -111,10 +128,8 @@ class PrefsProcessor : AbstractProcessor() {
           if (isSupportedType.not()) {
 
             // Print an error message.
-            processingEnv.messager.printMessage(
-              ERROR,
-              "Processed class contains file type ($fieldType) which is not supported."
-            )
+            processingEnv.messager
+              .errorMessage { "Processed class contains file type ($fieldType) which is not supported." }
 
             // Halt the annotation processor.
             return false
@@ -142,51 +157,64 @@ class PrefsProcessor : AbstractProcessor() {
           prefList += preference
         }
 
-        // Prepare arguments container.
-        val arguments = {
-          "package" to packageElement.qualifiedName
-          "comment" to classComment
-          "constantsClassName" to "${classElement.simpleName}${SuffixConfiguration.CONSTANTS}"
-          "prefList" to prefList
+        // Retrieve file name.
+        val prefsAnnotation = classElement.getAnnotation(Prefs::class.java)
+        val filename = when(prefsAnnotation.value.isEmpty()) {
+          false -> prefsAnnotation.value
+          true -> prefsAnnotation.fileName
         }
 
+        // Prepare arguments container.
+        val arguments: MutableMap<String, Any?> = mutableMapOf()
+        arguments["fileName"] = filename
+        arguments["package"] = packageElement.qualifiedName
+        arguments["comment"] = classComment
+        arguments["prefWrapperClassName"] = "${classElement.simpleName}${SuffixConfiguration.PREFS_WRAPPER}"
+        arguments["editorWrapperClassName"] = "${classElement.simpleName}${SuffixConfiguration.EDITOR_WRAPPER}"
+        arguments["constantsClassName"] = "${classElement.simpleName}${SuffixConfiguration.CONSTANTS}"
+        arguments["prefList"] = prefList
+
+        // Make directory for generated files.
+        val packageDirectory = File(kaptTargetDirectory, getPackagePath(packageElement))
+          .also { it.mkdirs() }
+
         // Create shared preferences wrapper.
-        processingEnv.filer
-          .createSourceFile("${classElement.qualifiedName}${SuffixConfiguration.PREFS_WRAPPER}")
-          .openWriter()
-          .use { writer ->
-            val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.PREFS_WRAPPER)
-            template.process(arguments, writer)
-          }
+        File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.PREFS_WRAPPER}.kt").apply {
+          writer(Charset.defaultCharset())
+            .use { writer ->
+              val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.PREFS_WRAPPER)
+              template.process(arguments, writer)
+            }
+        }
 
         // Create editor wrapper.
-        processingEnv.filer
-          .createSourceFile("${classElement.qualifiedName}${SuffixConfiguration.EDITOR_WRAPPER}")
-          .openWriter()
-          .use { writer ->
-            val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.EDITOR_WRAPPER)
-            template.process(arguments, writer)
-          }
+        File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.EDITOR_WRAPPER}.kt").apply {
+          writer(Charset.defaultCharset())
+            .use { writer ->
+              val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.EDITOR_WRAPPER)
+              template.process(arguments, writer)
+            }
+        }
 
         // Create constants file that uses the following arguments.
-        processingEnv.filer
-          .createSourceFile("${classElement.qualifiedName}${SuffixConfiguration.CONSTANTS}")
-          .openWriter()
-          .use { writer ->
-            val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.CONSTANTS)
-            template.process(arguments, writer)
-          }
+        File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.CONSTANTS}.kt").apply {
+          writer(Charset.defaultCharset())
+            .use { writer ->
+              val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.CONSTANTS)
+              template.process(arguments, writer)
+            }
+        }
       }
     }
 
     // Print a message that annotation processor stopped.
-    processingEnv.messager.printMessage(
-      NOTE,
-      "Ktx Prefs Annotation Processor had finished it's work."
-    )
+    processingEnv.messager.noteMessage { "Ktx Prefs Annotation Processor had finished it's work." }
 
     return true
   }
+
+  private fun getPackagePath(packageElement: PackageElement): String =
+    packageElement.qualifiedName.toString().replace(".", "/")
 
   private fun getPreferenceName(fieldName: String, fieldNameAnnotation: Name?): String? =
     fieldNameAnnotation?.value ?: fieldName
@@ -205,7 +233,7 @@ class PrefsProcessor : AbstractProcessor() {
     variableElement.getAnnotation(DefaultFloat::class.java)?.let {
       return when (isAnnotationSupported(FLOAT, fieldType)) {
         false -> null
-        true -> it.value.toString() + "f"
+        true -> "${it.value}f"
       }
     }
 
@@ -213,7 +241,7 @@ class PrefsProcessor : AbstractProcessor() {
     variableElement.getAnnotation(DefaultInt::class.java)?.let {
       return when (isAnnotationSupported(INTEGER, fieldType)) {
         false -> null
-        true -> it.value.toString()
+        true -> "${it.value}"
       }
     }
 
@@ -221,7 +249,7 @@ class PrefsProcessor : AbstractProcessor() {
     variableElement.getAnnotation(DefaultLong::class.java)?.let {
       return when (isAnnotationSupported(LONG, fieldType)) {
         false -> null
-        true -> it.value.toString() + "L"
+        true -> "${it.value}L"
       }
     }
 
@@ -229,7 +257,7 @@ class PrefsProcessor : AbstractProcessor() {
     variableElement.getAnnotation(DefaultString::class.java)?.let {
       return when (isAnnotationSupported(STRING, fieldType)) {
         false -> null
-        true -> wrap(escapeJava(it.value), "\"")
+        true -> "\"${escapeJava(it.value)}\""
       }
     }
 
@@ -246,10 +274,7 @@ class PrefsProcessor : AbstractProcessor() {
     if (preferenceType.isCompatible(fieldType).not()) {
 
       // Print an error message.
-      processingEnv.messager.printMessage(
-        ERROR,
-        "Processed class contains file type ($fieldType) which is not supported."
-      )
+      processingEnv.messager.errorMessage { "Processed class contains file type ($fieldType) which is not supported." }
 
       // Halt the annotation processor.
       return false

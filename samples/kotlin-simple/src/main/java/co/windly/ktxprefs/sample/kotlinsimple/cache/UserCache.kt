@@ -1,13 +1,13 @@
 package co.windly.ktxprefs.sample.kotlinsimple.cache
 
 import android.content.Context.MODE_PRIVATE
-import co.windly.kotlinxprefs.annotation.DefaultBoolean
-import co.windly.kotlinxprefs.annotation.DefaultFloat
-import co.windly.kotlinxprefs.annotation.DefaultInt
-import co.windly.kotlinxprefs.annotation.DefaultLong
-import co.windly.kotlinxprefs.annotation.DefaultString
-import co.windly.kotlinxprefs.annotation.DefaultStringSet
-import co.windly.kotlinxprefs.annotation.Prefs
+import co.windly.ktxprefs.annotation.DefaultBoolean
+import co.windly.ktxprefs.annotation.DefaultFloat
+import co.windly.ktxprefs.annotation.DefaultInt
+import co.windly.ktxprefs.annotation.DefaultLong
+import co.windly.ktxprefs.annotation.DefaultString
+import co.windly.ktxprefs.annotation.DefaultStringSet
+import co.windly.ktxprefs.annotation.Prefs
 
 @Prefs(
   value = "UserCachePreferences",
@@ -30,6 +30,9 @@ class UserCache(
   @DefaultString(value = "")
   internal val lastName: String,
 
+  @DefaultString(value = "")
+  internal val password: String,
+
   //endregion
 
   //region Active
@@ -49,14 +52,16 @@ class UserCache(
   //region Height
 
   @DefaultFloat(value = 0.0f)
-  internal val height: Float,
+  internal val height: Float
 
   //endregion
 
   //region Address
 
-  @DefaultStringSet(value = ["", "", "", ""])
-  internal val address: Set<String>
+  // TODO: Not supported yet.
+
+//  @DefaultStringSet(value = ["", "", "", ""])
+//  internal val address: Set<String>
 
   //endregion
 )

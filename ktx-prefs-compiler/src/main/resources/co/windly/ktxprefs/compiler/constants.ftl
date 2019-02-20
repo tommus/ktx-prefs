@@ -25,7 +25,6 @@ class ${constantsClassName} {
     val DEFAULT_${pref.fieldNameUpperCase} = ${pref.defaultValue};
 
     //endregion
-
 </#list>
   }
 }
