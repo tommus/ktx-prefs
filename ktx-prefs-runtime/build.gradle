@@ -58,6 +58,12 @@ dependencies {
   implementation deps.kotlin.stdlib_jdk8
 
   //endregion
+
+  //region Reactive Extensions
+
+  api deps.rx.java
+
+  //endregion
 }
 
 //endregion

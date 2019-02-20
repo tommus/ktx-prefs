@@ -9,5 +9,5 @@ annotation class Prefs(
 
   val fileMode: Int = -1,
 
-  val disableNullable: Boolean = false
+  val distinctUntilChanged: Boolean = true
 )

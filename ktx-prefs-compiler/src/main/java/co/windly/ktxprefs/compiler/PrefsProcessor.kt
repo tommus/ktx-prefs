@@ -157,8 +157,10 @@ class PrefsProcessor : AbstractProcessor() {
           prefList += preference
         }
 
-        // Retrieve file name.
+        // Retrieve a class annotation.
         val prefsAnnotation = classElement.getAnnotation(Prefs::class.java)
+
+        // Retrieve file name.
         val filename = when(prefsAnnotation.value.isEmpty()) {
           false -> prefsAnnotation.value
           true -> prefsAnnotation.fileName
@@ -167,6 +169,7 @@ class PrefsProcessor : AbstractProcessor() {
         // Prepare arguments container.
         val arguments: MutableMap<String, Any?> = mutableMapOf()
         arguments["fileName"] = filename
+        arguments["distinctUntilChanged"] = prefsAnnotation.distinctUntilChanged
         arguments["package"] = packageElement.qualifiedName
         arguments["comment"] = classComment
         arguments["prefWrapperClassName"] = "${classElement.simpleName}${SuffixConfiguration.PREFS_WRAPPER}"

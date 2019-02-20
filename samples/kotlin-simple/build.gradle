@@ -50,11 +50,7 @@ android {
   //region Sources
 
   sourceSets {
-    main {
-      java {
-        srcDir "${buildDir.absolutePath}/generated/source/kaptKotlin/"
-      }
-    }
+    main.java.srcDir "${buildDir.absolutePath}/generated/source/kaptKotlin/"
   }
 
   //endregion
