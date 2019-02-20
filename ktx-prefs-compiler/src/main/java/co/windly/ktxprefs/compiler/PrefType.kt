@@ -17,6 +17,12 @@ enum class PrefType constructor(
 
   //endregion
 
+  //region Non Null Simple Name
+
+  val nonNullSimpleName: String,
+
+  //endregion
+
   //region Method Name
 
   val methodName: String,
@@ -35,42 +41,48 @@ enum class PrefType constructor(
 
   BOOLEAN(
     qualifiedName = Boolean::class.java.name,
-    simpleName = "Boolean",
+    simpleName = "Boolean?",
+    nonNullSimpleName = "Boolean",
     methodName = "Boolean",
     defaultValue = "false"
   ),
 
   FLOAT(
     qualifiedName = Float::class.java.name,
-    simpleName = "Float",
+    simpleName = "Float?",
+    nonNullSimpleName = "Float",
     methodName = "Float",
     defaultValue = "0.0f"
   ),
 
   INTEGER(
     qualifiedName = Int::class.java.name,
-    simpleName = "Int",
+    simpleName = "Int?",
+    nonNullSimpleName = "Int",
     methodName = "Int",
     defaultValue = "0"
   ),
 
   LONG(
     qualifiedName = Long::class.java.name,
-    simpleName = "Long",
+    simpleName = "Long?",
+    nonNullSimpleName = "Long",
     methodName = "Long",
     defaultValue = "0L"
   ),
 
   STRING(
     qualifiedName = String::class.java.name,
-    simpleName = "String",
+    simpleName = "String?",
+    nonNullSimpleName = "String",
     methodName = "String",
     defaultValue = "\"\""
   ),
 
   STRING_SET(
     qualifiedName = "kotlin.collections.Set<kotlin.String>",
-    simpleName = "Set<String>",
+    simpleName = "Set<String>?",
+    nonNullSimpleName = "Set<String>",
     methodName = "StringSet",
     defaultValue = "kotlin.collections.emptySet<kotlin.String>()"
   );

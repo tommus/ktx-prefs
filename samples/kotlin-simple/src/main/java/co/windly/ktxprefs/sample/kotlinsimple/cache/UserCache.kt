@@ -6,7 +6,6 @@ import co.windly.ktxprefs.annotation.DefaultFloat
 import co.windly.ktxprefs.annotation.DefaultInt
 import co.windly.ktxprefs.annotation.DefaultLong
 import co.windly.ktxprefs.annotation.DefaultString
-import co.windly.ktxprefs.annotation.DefaultStringSet
 import co.windly.ktxprefs.annotation.Prefs
 
 @Prefs(
@@ -37,7 +36,7 @@ class UserCache(
 
   //region Active
 
-  @DefaultBoolean(value = true)
+  @DefaultBoolean(value = false)
   internal val active: Boolean,
 
   //endregion
@@ -53,15 +52,6 @@ class UserCache(
 
   @DefaultFloat(value = 0.0f)
   internal val height: Float
-
-  //endregion
-
-  //region Address
-
-  // TODO: Not supported yet.
-
-//  @DefaultStringSet(value = ["", "", "", ""])
-//  internal val address: Set<String>
 
   //endregion
 )
