@@ -38,9 +38,13 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
    */
   </#if><#t>
   fun put${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): ${editorWrapperClassName} =
-    when(${pref.fieldName} == null) {
-      true -> remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase})
-      false -> put${pref.type.methodName}(${constantsClassName}.KEY_${pref.fieldNameUpperCase}, ${pref.fieldName})
+    when (${pref.fieldName} == null) {
+      true ->
+        remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase})
+          .also { ${pref.fieldName}Subject.onNext(${pref.defaultValue}) }
+      false ->
+        put${pref.type.methodName}(${constantsClassName}.KEY_${pref.fieldNameUpperCase}, ${pref.fieldName})
+          .also { ${pref.fieldName}Subject.onNext(${pref.fieldName}) }
     }.let { this }
 
   <#if pref.comment??>
@@ -50,7 +54,7 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
   </#if><#t>
   fun putRx${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): Completable =
     Completable
-      .fromAction { put${pref.fieldName?cap_first}(${pref.fieldName}) }
+      .defer { Completable.fromAction { put${pref.fieldName?cap_first}(${pref.fieldName}) } }
       .subscribeOn(Schedulers.io())
 
   <#if pref.comment??>
@@ -76,6 +80,7 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
   </#if><#t>
   fun remove${pref.fieldName?cap_first}(): ${editorWrapperClassName} =
     remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase})
+      .also { ${pref.fieldName}Subject.onNext(${pref.defaultValue}) }
       .let { this }
 
   <#if pref.comment??>
@@ -85,7 +90,7 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
   </#if><#t>
   fun removeRx${pref.fieldName?cap_first}(): Completable =
     Completable
-      .fromAction { remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase}) }
+      .defer { Completable.fromAction { remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase}) } }
       .subscribeOn(Schedulers.io())
 
   <#if pref.comment??>

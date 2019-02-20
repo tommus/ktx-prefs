@@ -81,6 +81,12 @@ dependencies {
 
   //endregion
 
+  //region Reactive Extensions
+
+  implementation deps.rx.kotlin
+
+  //endregion
+
   //region Support / Androidx
 
   implementation deps.androidx.constraintlayout

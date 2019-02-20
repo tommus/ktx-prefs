@@ -37,7 +37,7 @@ class UserCache(
 
   //region Active
 
-  @DefaultBoolean(value = true)
+  @DefaultBoolean(value = false)
   internal val active: Boolean,
 
   //endregion
