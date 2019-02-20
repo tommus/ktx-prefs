@@ -1,13 +1,6 @@
 //region Startup Plugins
 
-apply plugin: "java-library"
-
-//endregion
-
-//region Compatibility
-
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+apply plugin: "kotlin"
 
 //endregion
 
@@ -15,25 +8,25 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 dependencies {
 
-    //region Application Modules
+  //region Application Modules
 
-    implementation project(":ktx-prefs-annotations")
+  implementation project(":ktx-prefs-annotations")
 
-    //endregion
+  //endregion
 
-    //region Kotlin
+  //region Kotlin
 
-    implementation deps.kotlin.stdlib_jdk8
+  implementation deps.kotlin.stdlib_jdk8
 
-    //endregion
+  //endregion
 
-    //region Miscellaneous
+  //region Miscellaneous
 
-    implementation deps.template.freemarker
-    implementation deps.misc.commons_io
-    implementation deps.misc.commons_lang
+  implementation deps.template.freemarker
+  implementation deps.misc.commons_io
+  implementation deps.misc.commons_lang
 
-    //endregion
+  //endregion
 }
 
 //endregion

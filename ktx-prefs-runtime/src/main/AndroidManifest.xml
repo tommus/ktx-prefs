@@ -1,2 +1,2 @@
 <manifest
-  package="co.windly.ktxprefs"/>
+  package="co.windly.ktxprefs.runtime"/>

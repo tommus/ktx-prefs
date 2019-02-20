@@ -1,4 +1,4 @@
-package co.windly.kotlinxprefs.annotations
+package co.windly.ktxprefs.annotation
 
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FILE)
 annotation class Prefs(

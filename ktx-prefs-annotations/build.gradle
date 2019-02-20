@@ -11,6 +11,19 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 //endregion
 
+//region Dependencies
+
+dependencies {
+
+  //region Kotlin
+
+  implementation deps.kotlin.stdlib_jdk8
+
+  //endregion
+}
+
+//endregion
+
 //region Publication
 
 apply from: rootProject.file("gradle/gradle-mvn-push.gradle")

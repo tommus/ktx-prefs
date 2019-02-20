@@ -46,6 +46,18 @@ android {
   }
 
   //endregion
+
+  //region Sources
+
+  sourceSets {
+    main {
+      java {
+        srcDir "${buildDir.absolutePath}/generated/source/kaptKotlin/"
+      }
+    }
+  }
+
+  //endregion
 }
 
 //endregion
@@ -56,11 +68,8 @@ dependencies {
 
   //region Application Modules
 
-  // TODO: Remove.
-  implementation project(":ktx-prefs-annotations")
-
   implementation project(":ktx-prefs")
-  // kapt project(":ktx-prefs-compiler")
+  kapt project(":ktx-prefs-compiler")
 
   //endregion
 
