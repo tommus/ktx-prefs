@@ -10,8 +10,8 @@ Add dependencies to the *Kotlin-based* project:
 
 ```groovy
 dependencies {
-    implementation "co.windly:ktx-prefs:1.0.0"
-    kapt "co.windly:ktx-prefs-compiler:1.0.0"
+    implementation "co.windly:ktx-prefs:1.0.1"
+    kapt "co.windly:ktx-prefs-compiler:1.0.1"
 }
 ```
 

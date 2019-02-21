@@ -239,7 +239,7 @@ afterEvaluate { project ->
   if (JavaVersion.current().isJava8Compatible()) {
     allprojects {
       tasks.withType(Javadoc) {
-        options.addStringOption("Xdoclint:none", "-quiet")
+        enabled = false
       }
     }
   }
@@ -252,8 +252,10 @@ afterEvaluate { project ->
     if (project.getPlugins().hasPlugin("com.android.application") ||
         project.getPlugins().hasPlugin("com.android.library")) {
       archives androidSourcesJar
+      archives androidJavadocsJar
     } else {
       archives sourcesJar
+      archives javadocJar
     }
   }
 
