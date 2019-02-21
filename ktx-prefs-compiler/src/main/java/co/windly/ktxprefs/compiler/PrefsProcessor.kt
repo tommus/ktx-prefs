@@ -8,6 +8,7 @@ import co.windly.ktxprefs.annotation.DefaultString
 import co.windly.ktxprefs.annotation.DefaultStringSet
 import co.windly.ktxprefs.annotation.Name
 import co.windly.ktxprefs.annotation.Prefs
+import co.windly.ktxprefs.annotation.Reactive
 import co.windly.ktxprefs.compiler.PrefType.BOOLEAN
 import co.windly.ktxprefs.compiler.PrefType.FLOAT
 import co.windly.ktxprefs.compiler.PrefType.INTEGER
@@ -46,7 +47,8 @@ import javax.lang.model.util.ElementFilter
     "co.windly.ktxprefs.annotation.DefaultStringSet",
     "co.windly.ktxprefs.annotation.Mode",
     "co.windly.ktxprefs.annotation.Name",
-    "co.windly.ktxprefs.annotation.Prefs"
+    "co.windly.ktxprefs.annotation.Prefs",
+    "co.windly.ktxprefs.annotation.Reactive"
   ]
 )
 @SupportedOptions(value = [ProcessorConfiguration.OPTION_KAPT_KOTLIN])
@@ -67,7 +69,7 @@ class PrefsProcessor : AbstractProcessor() {
 
     const val CONSTANTS = "Constants"
 
-    const val EXTENTION = "Ext"
+    const val EXTENSION = "Ext"
   }
 
   //endregion
@@ -104,12 +106,17 @@ class PrefsProcessor : AbstractProcessor() {
       // Iterate over all class elements.
       environment.getElementsAnnotatedWith(annotation).forEach { element ->
 
-        // Retrieve class meta information (such as type, package, comment).
+        // Retrieve a class meta information.
         val classElement = element as TypeElement
         val packageElement = classElement.enclosingElement as PackageElement
         val classComment = processingEnv.elementUtils.getDocComment(classElement)
 
-        // Parse preferences.
+        // Retrieve a class reactive meta information.
+        val classReactive = classElement.getAnnotation(Reactive::class.java)
+        val classEnableReactive = classReactive?.value ?: true
+        val classDistinctUntilChanged = classReactive?.distinctUntilChanged ?: true
+
+        // Prepare preferences contains.
         val prefList = mutableListOf<Pref>()
 
         // Iterate over the fields of given class.
@@ -146,20 +153,27 @@ class PrefsProcessor : AbstractProcessor() {
           val preferenceName = getPreferenceName(fieldName, fieldNameAnnotation)
           val preferenceDefault = getPreferenceDefault(variableElement, fieldType)
 
+          // Retrieve reactive meta information.
+          val variableReactive = variableElement.getAnnotation(Reactive::class.java)
+          val enableReactive = variableReactive?.value ?: classEnableReactive ?: true
+          val distinctUntilChanged = variableReactive?.distinctUntilChanged ?: classDistinctUntilChanged ?: true
+
           // Create a field preference descriptor.
           val preference = Pref(
             fieldName = fieldName,
             prefName = preferenceName,
             type = PrefType.from(fieldType),
             defaultValue = preferenceDefault,
-            comment = fieldComment
+            comment = fieldComment,
+            enableReactive = enableReactive,
+            distinctUntilChanged = distinctUntilChanged
           )
 
           // Add descriptor to preferences list.
           prefList += preference
         }
 
-        // Retrieve a class annotation.
+        // Retrieve a class prefs annotation.
         val prefsAnnotation = classElement.getAnnotation(Prefs::class.java)
 
         // Retrieve file name.
@@ -170,14 +184,19 @@ class PrefsProcessor : AbstractProcessor() {
 
         // Prepare arguments container.
         val arguments: MutableMap<String, Any?> = mutableMapOf()
+
+        // Prepare class basics arguments.
         arguments["fileName"] = filename
-        arguments["distinctUntilChanged"] = prefsAnnotation.distinctUntilChanged
         arguments["package"] = packageElement.qualifiedName
         arguments["comment"] = classComment
+
+        // Prepare generated names arguments.
         arguments["prefWrapperClassName"] = "${classElement.simpleName}${SuffixConfiguration.PREFS_WRAPPER}"
         arguments["editorWrapperClassName"] = "${classElement.simpleName}${SuffixConfiguration.EDITOR_WRAPPER}"
         arguments["constantsClassName"] = "${classElement.simpleName}${SuffixConfiguration.CONSTANTS}"
         arguments["extensionClassName"] = "${classElement.simpleName}"
+
+        // Prepare preferences list.
         arguments["prefList"] = prefList
 
         // Make directory for generated files.
@@ -185,7 +204,7 @@ class PrefsProcessor : AbstractProcessor() {
           .also { it.mkdirs() }
 
         // Create shared preferences wrapper extensions.
-        File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.EXTENTION}.kt").apply {
+        File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.EXTENSION}.kt").apply {
           writer(Charset.defaultCharset())
             .use { writer ->
               val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.EXTENSIONS)

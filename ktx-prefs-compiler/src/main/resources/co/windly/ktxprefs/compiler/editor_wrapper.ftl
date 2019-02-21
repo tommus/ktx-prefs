@@ -21,16 +21,19 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
   override fun clear(): SharedPreferences.Editor =
     super.clear()
     <#list prefList as pref>
+    <#if pref.enableReactive>
       .also { ${pref.fieldName}Subject.onNext(${pref.defaultValue}) }
+    </#if>
     </#list>
 
   //endregion
-
 <#list prefList as pref>
 
   //region ${pref.fieldName?cap_first}
+  <#if pref.enableReactive>
 
   internal lateinit var ${pref.fieldName}Subject: BehaviorSubject<${pref.type.nonNullSimpleName}>
+  </#if>
 
   <#if pref.comment??>
   /**
@@ -41,11 +44,16 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
     when (${pref.fieldName} == null) {
       true ->
         remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase})
+          <#if pref.enableReactive>
           .also { ${pref.fieldName}Subject.onNext(${pref.defaultValue}) }
+          </#if>
       false ->
         put${pref.type.methodName}(${constantsClassName}.KEY_${pref.fieldNameUpperCase}, ${pref.fieldName})
+          <#if pref.enableReactive>
           .also { ${pref.fieldName}Subject.onNext(${pref.fieldName}) }
+          </#if>
     }.let { this }
+  <#if pref.enableReactive>
 
   <#if pref.comment??>
     /**
@@ -56,6 +64,7 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
     Completable
       .defer { Completable.fromAction { put${pref.fieldName?cap_first}(${pref.fieldName}) } }
       .subscribeOn(Schedulers.io())
+  </#if>
 
   <#if pref.comment??>
   /**
@@ -64,6 +73,7 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
   </#if><#t>
   fun set${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): ${editorWrapperClassName} =
     put${pref.fieldName?cap_first}(${pref.fieldName})
+  <#if pref.enableReactive>
 
   <#if pref.comment??>
   /**
@@ -72,6 +82,7 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
   </#if><#t>
   fun setRx${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): Completable =
     putRx${pref.fieldName?cap_first}(${pref.fieldName})
+  </#if>
 
   <#if pref.comment??>
   /**
@@ -80,8 +91,11 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
   </#if><#t>
   fun remove${pref.fieldName?cap_first}(): ${editorWrapperClassName} =
     remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase})
+      <#if pref.enableReactive>
       .also { ${pref.fieldName}Subject.onNext(${pref.defaultValue}) }
+      </#if>
       .let { this }
+  <#if pref.enableReactive>
 
   <#if pref.comment??>
   /**
@@ -92,7 +106,9 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
     Completable
       .defer { Completable.fromAction { remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase}) } }
       .subscribeOn(Schedulers.io())
+  </#if>
 
+  <#if pref.enableReactive>
   <#if pref.comment??>
   /**
    * ${pref.comment?trim}
@@ -101,10 +117,11 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
   fun observeRx${pref.fieldName?cap_first}(): Flowable<${pref.type.nonNullSimpleName}> =
     ${pref.fieldName}Subject
       .toFlowable(BackpressureStrategy.LATEST)
-      <#if distinctUntilChanged>
+      <#if pref.distinctUntilChanged>
       .distinctUntilChanged()
       </#if>
 
+  </#if>
   //endregion
 </#list>
 }

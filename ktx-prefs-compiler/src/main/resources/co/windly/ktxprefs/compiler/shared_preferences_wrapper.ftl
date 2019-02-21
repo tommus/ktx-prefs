@@ -44,11 +44,11 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
 
   override fun edit(): UserCacheEditorWrapper =
     UserCacheEditorWrapper(super.edit())
-      .also {
-        <#list prefList as pref>
-        it.${pref.fieldName}Subject = ${pref.fieldName}Subject
-        </#list>
-      }
+      <#list prefList as pref>
+      <#if pref.enableReactive>
+      .also { it.${pref.fieldName}Subject = ${pref.fieldName}Subject }
+      </#if>
+      </#list>
 
   //endregion
 
@@ -59,12 +59,14 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
   }
 
   //endregion
-
 <#list prefList as pref>
+
   //region ${pref.fieldName?cap_first}
+  <#if pref.enableReactive>
 
   private val ${pref.fieldName}Subject: BehaviorSubject<${pref.type.nonNullSimpleName}> =
     BehaviorSubject.createDefault(${constantsClassName}.DEFAULT_${pref.fieldNameUpperCase})
+  </#if>
 
   <#if pref.type == "BOOLEAN">
   <#if pref.comment??>
@@ -74,11 +76,13 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
   </#if><#t>
   fun get${pref.fieldName?cap_first}(): ${pref.type.nonNullSimpleName} =
     is${pref.fieldName?cap_first}()
+  <#if pref.enableReactive>
 
   fun getRx${pref.fieldName?cap_first}(): Single<${pref.type.nonNullSimpleName}> =
       Single
         .defer { Single.just(get${pref.fieldName?cap_first}()) }
         .subscribeOn(Schedulers.io())
+  </#if>
 
   </#if>
   <#if pref.comment??>
@@ -91,6 +95,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
       true -> ${constantsClassName}.DEFAULT_${pref.fieldNameUpperCase}
       false -> get${pref.type.methodName}(${constantsClassName}.KEY_${pref.fieldNameUpperCase}, ${pref.type.defaultValue})
     }
+  <#if pref.enableReactive>
 
   <#if pref.comment??>
   /**
@@ -101,6 +106,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
     Single
       .defer { Single.just(<#if pref.type == "BOOLEAN">is<#else>get</#if>${pref.fieldName?cap_first}()) }
       .subscribeOn(Schedulers.io())
+  </#if>
 
   <#if pref.comment??>
   /**
@@ -109,6 +115,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
   </#if><#t>
   fun contains${pref.fieldName?cap_first}(): Boolean =
     contains(${constantsClassName}.KEY_${pref.fieldNameUpperCase});
+  <#if pref.enableReactive>
 
   <#if pref.comment??>
   /**
@@ -119,6 +126,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
     Single
       .defer { Single.just(contains${pref.fieldName?cap_first}()) }
       .subscribeOn(Schedulers.io())
+  </#if>
 
   <#if pref.comment??>
   /**
@@ -127,6 +135,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
   </#if><#t>
   fun put${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): ${prefWrapperClassName} =
     edit().put${pref.fieldName?cap_first}(${pref.fieldName}).apply().let { this }
+  <#if pref.enableReactive>
 
   <#if pref.comment??>
   /**
@@ -135,6 +144,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
   </#if><#t>
   fun putRx${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): Completable =
     edit().putRx${pref.fieldName?cap_first}(${pref.fieldName})
+  </#if>
 
   <#if pref.comment??>
   /**
@@ -143,6 +153,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
   </#if><#t>
   fun set${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): ${prefWrapperClassName} =
     edit().set${pref.fieldName?cap_first}(${pref.fieldName}).let { this }
+  <#if pref.enableReactive>
 
   <#if pref.comment??>
   /**
@@ -151,6 +162,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
   </#if><#t>
   fun setRx${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): Completable =
     edit().setRx${pref.fieldName?cap_first}(${pref.fieldName})
+  </#if>
 
   <#if pref.comment??>
   /**
@@ -159,6 +171,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
   </#if><#t>
   fun remove${pref.fieldName?cap_first}(): ${prefWrapperClassName} =
       edit().remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase}).apply().let { this }
+  <#if pref.enableReactive>
 
   <#if pref.comment??>
   /**
@@ -167,6 +180,8 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
   </#if><#t>
   fun removeRx${pref.fieldName?cap_first}(): Completable =
     edit().removeRx${pref.fieldName?cap_first}()
+  </#if>
+  <#if pref.enableReactive>
 
   <#if pref.comment??>
   /**
@@ -175,8 +190,8 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
   </#if><#t>
   fun observeRx${pref.fieldName?cap_first}(): Flowable<${pref.type.nonNullSimpleName}> =
     edit().observeRx${pref.fieldName?cap_first}()
+  </#if>
 
   //endregion
-
 </#list>
 }

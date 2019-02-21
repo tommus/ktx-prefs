@@ -1,6 +1,7 @@
 # Ktx Preferences
 
-This library uses annotation processing to ensure the compile time verification for user-defined shared preferences.
+This library incorporates annotation processing to ensure the compile time verification for user-defined shared
+preferences.
 
 ## Usage
 
@@ -133,3 +134,13 @@ inline fun Context.requireUserCache(): UserCachePrefs =
 inline fun Fragment.requireUserCache(): UserCachePrefs =
     requireContext().requireUserCache()
 ``` 
+
+6. Reactive Extensions.
+
+Library supports generation of reactive methods by default. You can disable this feature either by:
+
+- annotating class with `@Reactive(value = false)`,
+- annotating field with `@Reactive(value = false)`
+
+All shared property changes are emitted to given stream using `distinctUntilChanged()` method. You can configure this
+behavior in `@Reactive` annotation (property `distinctUntilChanged`) for entire class or for each fields separately.

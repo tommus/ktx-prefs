@@ -1,6 +1,5 @@
 package co.windly.ktxprefs.sample.kotlinsimple.cache
 
-import android.content.Context.MODE_PRIVATE
 import co.windly.ktxprefs.annotation.DefaultBoolean
 import co.windly.ktxprefs.annotation.DefaultFloat
 import co.windly.ktxprefs.annotation.DefaultInt
@@ -8,10 +7,7 @@ import co.windly.ktxprefs.annotation.DefaultLong
 import co.windly.ktxprefs.annotation.DefaultString
 import co.windly.ktxprefs.annotation.Prefs
 
-@Prefs(
-  value = "UserCachePreferences",
-  fileMode = MODE_PRIVATE
-)
+@Prefs(value = "UserCachePreferences")
 class UserCache(
 
   //region Id
