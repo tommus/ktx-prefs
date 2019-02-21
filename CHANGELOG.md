@@ -1,6 +1,6 @@
 ## Change Log
 
-### Kotlin AndroidX Preferences 1.0.0 *(2019-02-21)*
+### Kotlin AndroidX Preferences 1.0.1 *(2019-02-21)*
 
   * Tweak Maven Publisher script.
 
