@@ -42,7 +42,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
 
   //region Edit
 
-  override fun edit(): UserCacheEditorWrapper =
+  override fun edit(): ${editorWrapperClassName} =
     UserCacheEditorWrapper(super.edit())
       <#list prefList as pref>
       <#if pref.enableReactive>

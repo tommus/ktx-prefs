@@ -1,5 +1,9 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.0.3 *(2019-02-21)*
+
+  * Hotfix preferences wrapper generation.
+
 ### Kotlin AndroidX Preferences 1.0.2 *(2019-02-21)*
 
   * Add `Reactive` annotation which allows to configure reactive behaviors;
