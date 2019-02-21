@@ -7,7 +7,5 @@ annotation class Prefs(
 
   val fileName: String = "",
 
-  val fileMode: Int = -1,
-
-  val distinctUntilChanged: Boolean = true
+  val fileMode: Int = -1
 )
