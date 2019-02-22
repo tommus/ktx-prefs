@@ -5,7 +5,6 @@ import co.windly.ktxprefs.annotation.DefaultFloat
 import co.windly.ktxprefs.annotation.DefaultInt
 import co.windly.ktxprefs.annotation.DefaultLong
 import co.windly.ktxprefs.annotation.DefaultString
-import co.windly.ktxprefs.annotation.DefaultStringSet
 import co.windly.ktxprefs.annotation.Name
 import co.windly.ktxprefs.annotation.Prefs
 import co.windly.ktxprefs.annotation.Reactive
@@ -44,7 +43,6 @@ import javax.lang.model.util.ElementFilter
     "co.windly.ktxprefs.annotation.DefaultInt",
     "co.windly.ktxprefs.annotation.DefaultLong",
     "co.windly.ktxprefs.annotation.DefaultString",
-    "co.windly.ktxprefs.annotation.DefaultStringSet",
     "co.windly.ktxprefs.annotation.Mode",
     "co.windly.ktxprefs.annotation.Name",
     "co.windly.ktxprefs.annotation.Prefs",
@@ -293,10 +291,6 @@ class PrefsProcessor : AbstractProcessor() {
         false -> null
         true -> "\"${escapeJava(it.value)}\""
       }
-    }
-
-    variableElement.getAnnotation(DefaultStringSet::class.java)?.let {
-      // TODO:
     }
 
     // Return null value for unsupported types.
