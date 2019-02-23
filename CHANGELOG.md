@@ -1,5 +1,9 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.1.0 *(2019-02-23)*
+
+  * Hotfix deferrable.
+
 ### Kotlin AndroidX Preferences 1.0.4 *(2019-02-21)*
 
   * Hotfix preferences wrapper generation.
