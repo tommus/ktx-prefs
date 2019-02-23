@@ -62,7 +62,7 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
   </#if><#t>
   fun putRx${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): Completable =
     Completable
-      .defer { Completable.fromAction { put${pref.fieldName?cap_first}(${pref.fieldName}) } }
+      .fromAction { put${pref.fieldName?cap_first}(${pref.fieldName}) }
       .subscribeOn(Schedulers.io())
   </#if>
 
@@ -104,7 +104,7 @@ class ${editorWrapperClassName}(wrapped: SharedPreferences.Editor) : EditorWrapp
   </#if><#t>
   fun removeRx${pref.fieldName?cap_first}(): Completable =
     Completable
-      .defer { Completable.fromAction { remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase}) } }
+      .fromAction { remove(${constantsClassName}.KEY_${pref.fieldNameUpperCase}) }
       .subscribeOn(Schedulers.io())
   </#if>
 
