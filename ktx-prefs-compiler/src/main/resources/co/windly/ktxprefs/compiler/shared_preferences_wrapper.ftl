@@ -152,7 +152,7 @@ class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWra
    */
   </#if><#t>
   fun set${pref.fieldName?cap_first}(${pref.fieldName}: ${pref.type.simpleName}): ${prefWrapperClassName} =
-    edit().set${pref.fieldName?cap_first}(${pref.fieldName}).let { this }
+    edit().set${pref.fieldName?cap_first}(${pref.fieldName}).apply().let { this }
   <#if pref.enableReactive>
 
   <#if pref.comment??>
