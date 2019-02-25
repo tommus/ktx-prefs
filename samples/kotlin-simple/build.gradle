@@ -46,14 +46,6 @@ android {
   }
 
   //endregion
-
-  //region Sources
-
-//  sourceSets {
-//    main.java.srcDir "${buildDir.absolutePath}/generated/source/kaptKotlin/"
-//  }
-
-  //endregion
 }
 
 //endregion
