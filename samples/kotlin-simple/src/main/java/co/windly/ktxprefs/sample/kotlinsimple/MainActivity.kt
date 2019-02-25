@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import co.windly.ktxprefs.sample.kotlinsimple.cache.requireUserCache
+import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
@@ -36,13 +37,66 @@ class MainActivity : Activity() {
     observePassword()
     observeActive()
 
+    // Initialize cache reactively.
+    initializeUserCacheReactively()
+
     // Initialize cache.
-    initializeUserCache()
+//    initializeUserCache()
   }
 
   //endregion
 
-  //region Initialize Cache
+  //region Initialize Cache - Reactive
+
+  private fun initializeUserCacheReactively() {
+
+    // Get access to shared preferences wrapper.
+    val cache = requireUserCache()
+
+    // Put a single value (apply() has not been implicitly called inside the stream).
+    cache
+      .putRxId(1L)
+      .subscribe()
+      .addTo(disposables)
+
+    // Put several values in chained stream.
+    Completable
+      .mergeArrayDelayError(
+        cache.putRxFirstName("John"),
+        cache.putRxLastName("Snow"),
+        cache.putRxPassword("WinterIsComing"),
+        cache.putRxActive(true)
+      )
+      .subscribe()
+      .addTo(disposables)
+
+    // TODO: Sample for accessing values reactively.
+
+    // Check if a value is set.
+    if (cache.containsFirstName()) {
+      Log.d(TAG, "First name is set.")
+    }
+
+    // Access preferences one by one.
+    Log.d(TAG, "id -> " + cache.getId())
+    Log.d(TAG, "first name -> " + cache.getFirstName())
+    Log.d(TAG, "last name -> " + cache.getLastName())
+    Log.d(TAG, "password -> " + cache.getPassword())
+    Log.d(TAG, "active -> " + cache.isActive())
+
+    // Access all preferences.
+    Log.d(TAG, "cache -> " + cache.getAll())
+
+    // Remove a value.
+    cache.removeFirstName()
+
+    // Clear all preferences.
+    cache.clear()
+  }
+
+  //endregion
+
+  //region Initialize Cache - Non-Reactive
 
   private fun initializeUserCache() {
 
