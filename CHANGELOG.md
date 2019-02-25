@@ -1,5 +1,9 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.2.1 *(2019-02-25)*
+
+  * Hotfix preferences wrapper generation.
+
 ### Kotlin AndroidX Preferences 1.2.0 *(2019-02-25)*
 
   * Change location of generated classes from `build/generated/source/kaptKotlin` to `build/generated/source/kapt`;
