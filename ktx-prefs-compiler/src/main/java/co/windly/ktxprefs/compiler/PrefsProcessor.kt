@@ -56,7 +56,12 @@ class PrefsProcessor : AbstractProcessor() {
   //region Annotation Processor Configuration
 
   internal object ProcessorConfiguration {
+
     const val OPTION_KAPT_KOTLIN = "kapt.kotlin.generated"
+
+    const val SRC_KAPT_KOTLIN = "kaptKotlin"
+
+    const val SRC_KAPT = "kapt"
   }
 
   private object SuffixConfiguration {
@@ -198,7 +203,9 @@ class PrefsProcessor : AbstractProcessor() {
         arguments["prefList"] = prefList
 
         // Make directory for generated files.
-        val packageDirectory = File(kaptTargetDirectory, getPackagePath(packageElement))
+        val packageDirectory = File(
+          kaptTargetDirectory.replace(ProcessorConfiguration.SRC_KAPT_KOTLIN, ProcessorConfiguration.SRC_KAPT),
+          getPackagePath(packageElement))
           .also { it.mkdirs() }
 
         // Create shared preferences wrapper extensions.

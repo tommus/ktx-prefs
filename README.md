@@ -16,14 +16,6 @@ dependencies {
 }
 ```
 
-Point from application Gradle module to generated sources location:
-
-```groovy
-sourceSets {
-  main.java.srcDir "${buildDir.absolutePath}/generated/source/kaptKotlin/"
-}
-```
-
 3. Define shared preferences.
 
 Use the `@Prefs` annotation on any POJO. All (non static) fields will be considered a preference.
