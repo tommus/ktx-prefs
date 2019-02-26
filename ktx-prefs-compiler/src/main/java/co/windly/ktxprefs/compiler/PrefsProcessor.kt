@@ -86,7 +86,7 @@ class PrefsProcessor : AbstractProcessor() {
 
     // Stop processing in case if there are no annotations declared.
     if (annotations == null) {
-      return false
+      return true
     }
 
     // Check whether Kotlin files target directory is accessible.
@@ -96,7 +96,7 @@ class PrefsProcessor : AbstractProcessor() {
       processingEnv.messager.errorMessage { "Cannot access Kotlin files target directory." }
 
       // Stop processing in case if an error occurred.
-      return false
+      return true
     }
 
     annotations.forEach { annotation ->
@@ -144,7 +144,7 @@ class PrefsProcessor : AbstractProcessor() {
               .errorMessage { "Processed class contains file type ($fieldType) which is not supported." }
 
             // Halt the annotation processor.
-            return false
+            return true
           }
 
           // Retrieve field meta information.
