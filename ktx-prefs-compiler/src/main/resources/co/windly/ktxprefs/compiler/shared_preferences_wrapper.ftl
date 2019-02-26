@@ -16,7 +16,7 @@ import io.reactivex.subjects.BehaviorSubject
  */
 </#if>
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWrapper(wrapped) {
+open class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferencesWrapper(wrapped) {
 
   //region Companion
 
