@@ -1,5 +1,9 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.2.2 *(2019-02-26)*
+
+  * Open generated preferences wrapper for inheritance.
+
 ### Kotlin AndroidX Preferences 1.2.1 *(2019-02-25)*
 
   * Hotfix preferences wrapper generation.
