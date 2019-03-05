@@ -1,5 +1,12 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.3.0 *(2019-03-05)*
+
+  * Fix non-reactive `clear()` method;
+  * Add reactive `clearRx()` method;
+  * Fix publishing to field's reactive subject on `removeRxXXX()`;
+  * Add `kotlin-reactive` sample.
+
 ### Kotlin AndroidX Preferences 1.2.2 *(2019-02-26)*
 
   * Open generated preferences wrapper for inheritance.
