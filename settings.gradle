@@ -9,8 +9,10 @@ include ":ktx-prefs-runtime"
 
 //region Samples
 
+include ":kotlin-reactive"
 include ":kotlin-simple"
 
+project(":kotlin-reactive").projectDir = new File(rootDir, "samples/kotlin-reactive")
 project(":kotlin-simple").projectDir = new File(rootDir, "samples/kotlin-simple")
 
 //endregion

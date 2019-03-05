@@ -4,9 +4,6 @@ import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import co.windly.ktxprefs.sample.kotlinsimple.cache.requireUserCache
-import io.reactivex.Completable
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.rxkotlin.addTo
 
 class MainActivity : Activity() {
 
@@ -18,85 +15,19 @@ class MainActivity : Activity() {
 
   //endregion
 
-  //region Disposables
-
-  private val disposables: CompositeDisposable
-    by lazy { CompositeDisposable() }
-
-  //endregion
-
   //region Lifecycle
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
 
-    // Subscribe to cache changes.
-    observeFirstName()
-    observeLastName()
-    observePassword()
-    observeActive()
-
-    // Initialize cache reactively.
-    initializeUserCacheReactively()
-
     // Initialize cache.
-//    initializeUserCache()
+    initializeUserCache()
   }
 
   //endregion
 
-  //region Initialize Cache - Reactive
-
-  private fun initializeUserCacheReactively() {
-
-    // Get access to shared preferences wrapper.
-    val cache = requireUserCache()
-
-    // Put a single value (apply() has not been implicitly called inside the stream).
-    cache
-      .putRxId(1L)
-      .subscribe()
-      .addTo(disposables)
-
-    // Put several values in chained stream.
-    Completable
-      .mergeArrayDelayError(
-        cache.putRxFirstName("John"),
-        cache.putRxLastName("Snow"),
-        cache.putRxPassword("WinterIsComing"),
-        cache.putRxActive(true)
-      )
-      .subscribe()
-      .addTo(disposables)
-
-    // TODO: Sample for accessing values reactively.
-
-    // Check if a value is set.
-    if (cache.containsFirstName()) {
-      Log.d(TAG, "First name is set.")
-    }
-
-    // Access preferences one by one.
-    Log.d(TAG, "id -> " + cache.getId())
-    Log.d(TAG, "first name -> " + cache.getFirstName())
-    Log.d(TAG, "last name -> " + cache.getLastName())
-    Log.d(TAG, "password -> " + cache.getPassword())
-    Log.d(TAG, "active -> " + cache.isActive())
-
-    // Access all preferences.
-    Log.d(TAG, "cache -> " + cache.getAll())
-
-    // Remove a value.
-    cache.removeFirstName()
-
-    // Clear all preferences.
-    cache.clear()
-  }
-
-  //endregion
-
-  //region Initialize Cache - Non-Reactive
+  //region Initialize Cache
 
   private fun initializeUserCache() {
 
@@ -122,148 +53,22 @@ class MainActivity : Activity() {
     }
 
     // Access preferences one by one.
-    Log.d(TAG, "id -> " + cache.getId())
-    Log.d(TAG, "first name -> " + cache.getFirstName())
-    Log.d(TAG, "last name -> " + cache.getLastName())
-    Log.d(TAG, "password -> " + cache.getPassword())
-    Log.d(TAG, "active -> " + cache.isActive())
+    with(cache) {
+      Log.d(TAG, "id -> ${getId()}.")
+      Log.d(TAG, "first name -> ${getFirstName()}.")
+      Log.d(TAG, "last name -> ${getLastName()}.")
+      Log.d(TAG, "password -> ${getPassword()}.")
+      Log.d(TAG, "active -> ${isActive()}.")
+    }
 
     // Access all preferences.
-    Log.d(TAG, "cache -> " + cache.getAll())
+    Log.d(TAG, "cache -> ${cache.all}.")
 
     // Remove a value.
     cache.removeFirstName()
 
     // Clear all preferences.
     cache.clear()
-  }
-
-  //endregion
-
-  //region First Name
-
-  private fun observeFirstName() {
-
-    // Get access to shared preferences wrapper.
-    val cache = requireUserCache()
-
-    // Subscribe to first name changes.
-    cache
-      .observeRxFirstName()
-      .subscribe(
-        { handleObserveRxFirstNameSuccess(it) },
-        { handleObserveRxFirstNameError(it) }
-      )
-      .addTo(disposables)
-  }
-
-  private fun handleObserveRxFirstNameSuccess(firstName: String) {
-
-    // Log the fact.
-    Log.d(TAG, "First name changed: $firstName.")
-  }
-
-  private fun handleObserveRxFirstNameError(throwable: Throwable) {
-
-    // Log an error.
-    Log.e(TAG, "An error occurred while observing first name.")
-    Log.e(TAG, throwable.localizedMessage)
-  }
-
-  //endregion
-
-  //region Last Name
-
-  private fun observeLastName() {
-
-    // Get access to shared preferences wrapper.
-    val cache = requireUserCache()
-
-    // Subscribe to last name changes.
-    cache
-      .observeRxLastName()
-      .subscribe(
-        { handleObserveRxLastNameSuccess(it) },
-        { handleObserveRxLastNameError(it) }
-      )
-      .addTo(disposables)
-  }
-
-  private fun handleObserveRxLastNameSuccess(lastName: String) {
-
-    // Log the fact.
-    Log.d(TAG, "Last name changed: $lastName.")
-  }
-
-  private fun handleObserveRxLastNameError(throwable: Throwable) {
-
-    // Log an error.
-    Log.e(TAG, "An error occurred while observing last name.")
-    Log.e(TAG, throwable.localizedMessage)
-  }
-
-  //endregion
-
-  //region Password
-
-  private fun observePassword() {
-
-    // Get access to shared preferences wrapper.
-    val cache = requireUserCache()
-
-    // Subscribe to password changes.
-    cache
-      .observeRxPassword()
-      .subscribe(
-        { handleObserveRxPasswordSuccess(it) },
-        { handleObserveRxPasswordError(it) }
-      )
-      .addTo(disposables)
-  }
-
-  private fun handleObserveRxPasswordSuccess(password: String) {
-
-    // Log the fact.
-    Log.d(TAG, "Password changed: $password.")
-  }
-
-  private fun handleObserveRxPasswordError(throwable: Throwable) {
-
-    // Log an error.
-    Log.e(TAG, "An error occurred while observing password.")
-    Log.e(TAG, throwable.localizedMessage)
-  }
-
-  //endregion
-
-  //region Active
-
-  private fun observeActive() {
-
-    // Get access to shared preferences wrapper.
-    val cache = requireUserCache()
-
-    // Subscribe to active changes.
-    cache
-      .observeRxActive()
-      .subscribe(
-        { handleObserveRxActiveSuccess(it) },
-        { handleObserveRxActiveError(it) }
-      )
-      .addTo(disposables)
-  }
-
-  private fun handleObserveRxActiveSuccess(active: Boolean) {
-
-    // Log the fact.
-    Log.d(TAG, "Active changed: $active.")
-  }
-
-  private fun handleObserveRxActiveError(throwable: Throwable) {
-
-    // Log an error.
-    Log.e(TAG, "An error occurred while observing active.")
-    Log.e(TAG, throwable.localizedMessage)
   }
 
   //endregion

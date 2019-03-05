@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+  <eat-comment/>
+
+  <!-- region Application -->
+
+  <string name="app_name">Kotlin Simple</string>
+
+  <!-- endregion -->
+
+</resources>
