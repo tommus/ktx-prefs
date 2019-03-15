@@ -114,7 +114,7 @@ cache.clear()
 
 5. Extension methods.
 
-For all classes annotated with `@Prefs` annotation there would be `<YourClassName>Ext` file generated which contains
+For all classes annotated with `@Prefs` there would be `<YourClassName>Ext` file generated which contains
 two extension methods that simplifies accessing generated shared preferences wrapper.
 
 Above mentioned extension methods will be called `require<YourClassName>()` like:
