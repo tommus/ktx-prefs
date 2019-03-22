@@ -69,7 +69,7 @@ open class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferenc
   <#if pref.enableReactive>
 
   private val ${pref.fieldName}Subject: BehaviorSubject<${pref.type.nonNullSimpleName}> =
-      BehaviorSubject.createDefault(${constantsClassName}.DEFAULT_${pref.fieldNameUpperCase})
+      BehaviorSubject.createDefault(get${pref.fieldName?cap_first}())
   </#if>
 
   <#if pref.type == "BOOLEAN">
