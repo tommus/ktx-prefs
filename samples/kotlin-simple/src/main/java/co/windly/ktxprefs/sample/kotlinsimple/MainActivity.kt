@@ -3,7 +3,7 @@ package co.windly.ktxprefs.sample.kotlinsimple
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import co.windly.ktxprefs.sample.kotlinsimple.cache.requireUserCache
+import co.windly.ktxprefs.sample.kotlinsimple.persistence.shared.requireUserCache
 
 class MainActivity : Activity() {
 

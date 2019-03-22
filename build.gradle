@@ -7,6 +7,7 @@ buildscript {
   }
   dependencies {
     classpath deps.build.android_gradle_plugin
+    classpath deps.build.jetifier
     classpath deps.build.kotlin_gradle_plugin
   }
 }

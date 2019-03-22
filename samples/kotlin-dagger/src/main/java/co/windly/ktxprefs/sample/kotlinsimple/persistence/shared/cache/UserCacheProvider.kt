@@ -1,4 +1,4 @@
-package co.windly.ktxprefs.sample.kotlinsimple.cache
+package co.windly.ktxprefs.sample.kotlinsimple.persistence.shared.cache
 
 import co.windly.ktxprefs.annotation.DefaultBoolean
 import co.windly.ktxprefs.annotation.DefaultFloat
@@ -6,11 +6,9 @@ import co.windly.ktxprefs.annotation.DefaultInt
 import co.windly.ktxprefs.annotation.DefaultLong
 import co.windly.ktxprefs.annotation.DefaultString
 import co.windly.ktxprefs.annotation.Prefs
-import co.windly.ktxprefs.annotation.Reactive
 
-@Prefs(value = "UserCachePreferences")
-@Reactive(value = false)
-class UserCache(
+@Prefs(value = "UserCache")
+class UserCacheProvider(
 
   //region Id
 
