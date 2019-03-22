@@ -1,12 +1,15 @@
-package co.windly.ktxprefs.sample.kotlinsimple
+package co.windly.ktxprefs.sample.kotlinsimple.presentation.main
 
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
-import co.windly.ktxprefs.sample.kotlinsimple.persistence.shared.requireUserCache
+import co.windly.ktxprefs.sample.kotlinsimple.R.layout
+import co.windly.ktxprefs.sample.kotlinsimple.persistence.shared.cache.UserCache
+import dagger.android.AndroidInjection
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import javax.inject.Inject
 
 class MainActivity : Activity() {
 
@@ -28,8 +31,12 @@ class MainActivity : Activity() {
   //region Lifecycle
 
   override fun onCreate(savedInstanceState: Bundle?) {
+
+    // Inject dependencies.
+    AndroidInjection.inject(this)
+
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    setContentView(layout.activity_main)
 
     // Subscribe to cache changes.
     observeFirstName()
@@ -45,10 +52,10 @@ class MainActivity : Activity() {
 
   //region Initialize Cache
 
-  private fun initializeUserCache() {
+  @Inject
+  lateinit var cache: UserCache
 
-    // Get access to shared preferences wrapper.
-    val cache = requireUserCache()
+  private fun initializeUserCache() {
 
     // Put a single value.
     cache
@@ -81,17 +88,26 @@ class MainActivity : Activity() {
 
     cache
       .getRxFirstName()
-      .subscribe { firstName -> Log.d(TAG, "first name -> $firstName.") }
+      .subscribe { firstName ->
+        Log.d(
+          TAG, "first name -> $firstName.")
+      }
       .addTo(disposables)
 
     cache
       .getRxLastName()
-      .subscribe { lastName -> Log.d(TAG, "last name -> $lastName.") }
+      .subscribe { lastName ->
+        Log.d(
+          TAG, "last name -> $lastName.")
+      }
       .addTo(disposables)
 
     cache
       .getRxPassword()
-      .subscribe { password -> Log.d(TAG, "password -> $password.") }
+      .subscribe { password ->
+        Log.d(
+          TAG, "password -> $password.")
+      }
       .addTo(disposables)
 
     cache
@@ -117,9 +133,6 @@ class MainActivity : Activity() {
   //region First Name
 
   private fun observeFirstName() {
-
-    // Get access to shared preferences wrapper.
-    val cache = requireUserCache()
 
     // Subscribe to first name changes.
     cache
@@ -150,9 +163,6 @@ class MainActivity : Activity() {
 
   private fun observeLastName() {
 
-    // Get access to shared preferences wrapper.
-    val cache = requireUserCache()
-
     // Subscribe to last name changes.
     cache
       .observeRxLastName()
@@ -182,9 +192,6 @@ class MainActivity : Activity() {
 
   private fun observePassword() {
 
-    // Get access to shared preferences wrapper.
-    val cache = requireUserCache()
-
     // Subscribe to password changes.
     cache
       .observeRxPassword()
@@ -213,9 +220,6 @@ class MainActivity : Activity() {
   //region Active
 
   private fun observeActive() {
-
-    // Get access to shared preferences wrapper.
-    val cache = requireUserCache()
 
     // Subscribe to active changes.
     cache
