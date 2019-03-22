@@ -1,5 +1,9 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.4.0 *(2019-03-22)*
+
+  * Initialize subject with preloaded or default value.
+
 ### Kotlin AndroidX Preferences 1.3.0 *(2019-03-05)*
 
   * Fix non-reactive `clear()` method;
