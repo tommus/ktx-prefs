@@ -155,11 +155,11 @@ behavior in `@Reactive` annotation (property `distinctUntilChanged`) for entire 
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[apibadge-svg]: https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat
+[apibadge-svg]: https://img.shields.io/badge/API-14%2B-brightgreen.svg?color=97ca00
 [apioverview]: https://developer.android.com/about/versions/android-4.0
-[license-svg]: https://img.shields.io/github/license/tommus/ktx-prefs.svg
+[license-svg]: https://img.shields.io/github/license/tommus/ktx-prefs.svg?color=97ca00
 [license]: http://www.apache.org/licenses/LICENSE-2.0
-[mavenbadge-svg]: https://maven-badges.herokuapp.com/maven-central/co.windly/ktx-prefs/badge.svg
+[mavenbadge-svg]: https://img.shields.io/maven-central/v/co.windly/ktx-prefs.svg?color=97ca00
 [mavencentral]: https://search.maven.org/artifact/co.windly/ktx-prefs
-[travisci-svg]: https://img.shields.io/travis/tommus/ktx-prefs/master.svg
+[travisci-svg]: https://img.shields.io/travis/tommus/ktx-prefs/master.svg?color=97ca00
 [travisci]: https://travis-ci.org/tommus/ktx-prefs
