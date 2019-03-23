@@ -1,5 +1,10 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.4.1 *(2019-03-23)*
+
+  * Update Android Gradle Plugin (3.3.2);
+  * Update Gradle Wrapper (5.3).
+
 ### Kotlin AndroidX Preferences 1.4.0 *(2019-03-22)*
 
   * Initialize subject with preloaded or default value.
