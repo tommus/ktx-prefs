@@ -1,13 +1,13 @@
 # Ktx Preferences
 
-[![Maven Central][mavenbadge-svg]][mavencentral]
+[![Maven Central][mavenbadge-svg]][mavencentral] | [![API][apibadge-svg]][apioverview]
 
 This library incorporates annotation processing to ensure the compile time verification for user-defined shared
 preferences.
 
 ## Usage
 
-1. Add dependencies.
+### Add dependencies.
 
 Add dependencies to the *Kotlin-based* project:
 
@@ -18,7 +18,7 @@ dependencies {
 }
 ```
 
-2. Define shared preferences.
+### Define shared preferences.
 
 Use the `@Prefs` annotation on any POJO. All (non static) fields will be considered a preference.
 
@@ -68,7 +68,7 @@ Accepted shared preference field types are:
 * Long
 * String
 
-3. Use generated wrapper class.
+### Use generated wrapper class.
 
 A class named `<YourClassName>Prefs` will be generated in the same package (at compile time).  Use it like this:
 
@@ -114,7 +114,7 @@ cache.removeFirstName()
 cache.clear()
 ```
 
-4. Extension methods.
+### Extension methods.
 
 For all classes annotated with `@Prefs` there would be `<YourClassName>Ext` file generated which contains
 two extension methods that simplifies accessing generated shared preferences wrapper.
@@ -129,7 +129,7 @@ inline fun Fragment.requireUserCache(): UserCachePrefs =
     requireContext().requireUserCache()
 ``` 
 
-5. Reactive Extensions.
+### Reactive Extensions.
 
 Library supports generation of reactive methods by default. You can disable this feature either by:
 
@@ -155,5 +155,7 @@ behavior in `@Reactive` annotation (property `distinctUntilChanged`) for entire 
     See the License for the specific language governing permissions and
     limitations under the License.
 
+[apibadge-svg]: https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat
+[apioverview]: https://developer.android.com/about/versions/android-4.0
 [mavenbadge-svg]: https://maven-badges.herokuapp.com/maven-central/co.windly/ktx-prefs/badge.svg
 [mavencentral]: https://search.maven.org/artifact/co.windly/ktx-prefs
