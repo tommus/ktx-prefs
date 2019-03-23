@@ -1,6 +1,6 @@
 # Ktx Preferences
 
-[![Maven Central][mavenbadge-svg]][mavencentral] [![Travis (.org) branch][travisci-svg]][travisci] [![API][apibadge-svg]][apioverview]
+[![Maven Central][mavenbadge-svg]][mavencentral] [![Travis (.org) branch][travisci-svg]][travisci] [![API][apibadge-svg]][apioverview] [![GitHub][license-svg]][license]
 
 This library incorporates annotation processing to ensure the compile time verification for user-defined shared
 preferences.
@@ -140,8 +140,6 @@ All shared property changes are emitted to given stream using `distinctUntilChan
 behavior in `@Reactive` annotation (property `distinctUntilChanged`) for entire class or for each field separately.
 
 ## License
-
-[![GitHub][license-svg]][license]
 
     Copyright 2019 Tomasz Dzieniak
 
