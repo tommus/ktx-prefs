@@ -1,6 +1,6 @@
 # Ktx Preferences
 
-[![Maven Central][mavenbadge-svg]][mavencentral] | [![API][apibadge-svg]][apioverview]
+[![Maven Central][mavenbadge-svg]][mavencentral] [![API][apibadge-svg]][apioverview]
 
 This library incorporates annotation processing to ensure the compile time verification for user-defined shared
 preferences.
