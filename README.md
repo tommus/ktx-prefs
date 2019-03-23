@@ -1,11 +1,9 @@
-# Ktx Preferences 
+# Ktx Preferences
+
+[![Maven Central][mavenbadge-svg]][mavencentral]
 
 This library incorporates annotation processing to ensure the compile time verification for user-defined shared
 preferences.
-
-## Compatibility
-
-This library supports Android ([![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)) Ice Cream Sandwich and newer.
 
 ## Usage
 
@@ -140,3 +138,22 @@ Library supports generation of reactive methods by default. You can disable this
 
 All shared property changes are emitted to given stream using `distinctUntilChanged()` method. You can configure this
 behavior in `@Reactive` annotation (property `distinctUntilChanged`) for entire class or for each field separately.
+
+## License
+
+    Copyright 2019 Tomasz Dzieniak
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+[mavenbadge-svg]: https://maven-badges.herokuapp.com/maven-central/co.windly/ktx-prefs/badge.svg
+[mavencentral]: https://search.maven.org/artifact/co.windly/ktx-prefs
