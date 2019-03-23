@@ -141,6 +141,8 @@ behavior in `@Reactive` annotation (property `distinctUntilChanged`) for entire 
 
 ## License
 
+[![GitHub][license-svg]][license]
+
     Copyright 2019 Tomasz Dzieniak
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -157,6 +159,8 @@ behavior in `@Reactive` annotation (property `distinctUntilChanged`) for entire 
 
 [apibadge-svg]: https://img.shields.io/badge/API-14%2B-brightgreen.svg?style=flat
 [apioverview]: https://developer.android.com/about/versions/android-4.0
+[license-svg]: https://img.shields.io/github/license/tommus/ktx-prefs.svg
+[license]: http://www.apache.org/licenses/LICENSE-2.0
 [mavenbadge-svg]: https://maven-badges.herokuapp.com/maven-central/co.windly/ktx-prefs/badge.svg
 [mavencentral]: https://search.maven.org/artifact/co.windly/ktx-prefs
 [travisci-svg]: https://img.shields.io/travis/tommus/ktx-prefs/master.svg
