@@ -1,6 +1,6 @@
 # Ktx Preferences
 
-[![Maven Central][mavenbadge-svg]][mavencentral] [![API][apibadge-svg]][apioverview]
+[![Maven Central][mavenbadge-svg]][mavencentral] ![Travis (.org) branch][travisci-svg] [![API][apibadge-svg]][apioverview]
 
 This library incorporates annotation processing to ensure the compile time verification for user-defined shared
 preferences.
@@ -159,3 +159,4 @@ behavior in `@Reactive` annotation (property `distinctUntilChanged`) for entire 
 [apioverview]: https://developer.android.com/about/versions/android-4.0
 [mavenbadge-svg]: https://maven-badges.herokuapp.com/maven-central/co.windly/ktx-prefs/badge.svg
 [mavencentral]: https://search.maven.org/artifact/co.windly/ktx-prefs
+[travisci-svg]: https://img.shields.io/travis/tommus/ktx-prefs/master.svg
