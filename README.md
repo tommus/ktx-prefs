@@ -1,7 +1,11 @@
-# Ktx Preferences
+# Ktx Preferences 
 
 This library incorporates annotation processing to ensure the compile time verification for user-defined shared
 preferences.
+
+## Compatibility
+
+This library supports Android ([![API](https://img.shields.io/badge/API-14%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=14)) Ice Cream Sandwich and newer.
 
 ## Usage
 
@@ -16,7 +20,7 @@ dependencies {
 }
 ```
 
-3. Define shared preferences.
+2. Define shared preferences.
 
 Use the `@Prefs` annotation on any POJO. All (non static) fields will be considered a preference.
 
@@ -66,7 +70,7 @@ Accepted shared preference field types are:
 * Long
 * String
 
-4. Use generated wrapper class.
+3. Use generated wrapper class.
 
 A class named `<YourClassName>Prefs` will be generated in the same package (at compile time).  Use it like this:
 
@@ -112,7 +116,7 @@ cache.removeFirstName()
 cache.clear()
 ```
 
-5. Extension methods.
+4. Extension methods.
 
 For all classes annotated with `@Prefs` there would be `<YourClassName>Ext` file generated which contains
 two extension methods that simplifies accessing generated shared preferences wrapper.
@@ -127,7 +131,7 @@ inline fun Fragment.requireUserCache(): UserCachePrefs =
     requireContext().requireUserCache()
 ``` 
 
-6. Reactive Extensions.
+5. Reactive Extensions.
 
 Library supports generation of reactive methods by default. You can disable this feature either by:
 
