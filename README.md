@@ -7,7 +7,7 @@ preferences.
 
 ## Usage
 
-### Add dependencies.
+### Add dependencies
 
 Add dependencies to the *Kotlin-based* project:
 
@@ -18,17 +18,14 @@ dependencies {
 }
 ```
 
-### Define shared preferences.
+### Define shared preferences
 
 Use the `@Prefs` annotation on any POJO. All (non static) fields will be considered a preference.
 
-For example:
+Minimal example:
 
 ```kotlin
-@Prefs(
-  value = "UserCachePreferences",
-  fileMode = MODE_PRIVATE
-)
+@Prefs(value = "UserCachePreferences")
 class UserCache(
 
   //region Id
@@ -54,7 +51,7 @@ class UserCache(
   //region Active
 
   @DefaultBoolean(value = false)
-  internal val active: Boolean,
+  internal val active: Boolean
 
   //endregion
 )
@@ -68,7 +65,7 @@ Accepted shared preference field types are:
 * Long
 * String
 
-### Use generated wrapper class.
+### Use generated wrapper class
 
 A class named `<YourClassName>Prefs` will be generated in the same package (at compile time).  Use it like this:
 
@@ -114,7 +111,7 @@ cache.removeFirstName()
 cache.clear()
 ```
 
-### Extension methods.
+### Extension methods
 
 For all classes annotated with `@Prefs` there would be `<YourClassName>Ext` file generated which contains
 two extension methods that simplifies accessing generated shared preferences wrapper.
@@ -129,7 +126,7 @@ inline fun Fragment.requireUserCache(): UserCachePrefs =
     requireContext().requireUserCache()
 ``` 
 
-### Reactive Extensions.
+### Reactive Extensions
 
 Library supports generation of reactive methods by default. You can disable this feature either by:
 
