@@ -1,5 +1,13 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.4.2 *(2019-04-19)*
+
+  * Update Kotlin JDK8 (1.3.30);
+  * Update RxJava (2.2.8);
+  * Update Commons Lang (3.9);
+  * Update Dagger (2.22.1);
+  * Update Gradle Wrapper (5.4).
+
 ### Kotlin AndroidX Preferences 1.4.1 *(2019-03-23)*
 
   * Update Android Gradle Plugin (3.3.2);
