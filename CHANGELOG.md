@@ -1,5 +1,9 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.4.3 *(2019-04-29)*
+
+  * Update Kotlin JDK8 (1.3.31);
+
 ### Kotlin AndroidX Preferences 1.4.2 *(2019-04-19)*
 
   * Update Kotlin JDK8 (1.3.30);
