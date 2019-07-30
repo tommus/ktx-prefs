@@ -9,7 +9,7 @@ abstract class MainModule {
   //region Contribution
 
   @ContributesAndroidInjector
-  abstract fun contributeMainAndroidInjector(): MainActivity
+  abstract fun contributeAndroidInjector(): MainActivity
 
   //endregion
 }

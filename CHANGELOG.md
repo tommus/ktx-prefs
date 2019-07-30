@@ -1,5 +1,14 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.4.4 *(2019-07-30)*
+
+  * Update Kotlin JDK8 (1.3.41);
+  * Update Gradle Wrapper (5.5.1);
+  * Update Android Gradle Plugin (3.4.2);
+  * Update Dagger (2.2.4);
+  * Reimplement dependency injection in samples to no longer use deprecated builders;
+  * Update RxJava (2.2.10);
+
 ### Kotlin AndroidX Preferences 1.4.3 *(2019-04-29)*
 
   * Update Kotlin JDK8 (1.3.31);
