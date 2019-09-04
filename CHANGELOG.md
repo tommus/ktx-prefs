@@ -1,5 +1,15 @@
 ## Change Log
 
+### Kotlin AndroidX Preferences 1.4.5 *(2019-09-04)*
+
+  * Update Kotlin JDK8 (1.3.50);
+  * Update Android Gradle Plugin (3.5.0);
+  * Update Freemarker (2.3.29);
+  * Update RxJava (2.2.12);
+  * Update RxKotlin (2.4.0);
+  * Remove Commons Lang and Commons IO with Commons Text;
+  * Replace Javax Annotation library;
+
 ### Kotlin AndroidX Preferences 1.4.4 *(2019-07-30)*
 
   * Update Kotlin JDK8 (1.3.41);
