@@ -7,7 +7,7 @@
   * Update Freemarker (2.3.29);
   * Update RxJava (2.2.12);
   * Update RxKotlin (2.4.0);
-  * Remove Commons Lang and Commons IO with Commons Text;
+  * Replace Commons Lang and Commons IO with Commons Text;
   * Replace Javax Annotation library;
 
 ### Kotlin AndroidX Preferences 1.4.4 *(2019-07-30)*
