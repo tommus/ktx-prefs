@@ -20,7 +20,7 @@ import co.windly.ktxprefs.compiler.PrefsProcessor.FreemarkerConfiguration.MINOR_
 import co.windly.ktxprefs.compiler.PrefsProcessor.ProcessorConfiguration
 import freemarker.template.Configuration
 import freemarker.template.Version
-import org.apache.commons.lang3.StringEscapeUtils.escapeJava
+import org.apache.commons.text.StringEscapeUtils
 import java.io.File
 import java.nio.charset.Charset
 import javax.annotation.processing.AbstractProcessor
@@ -79,7 +79,8 @@ class PrefsProcessor : AbstractProcessor() {
 
   //region Process
 
-  override fun process(annotations: MutableSet<out TypeElement>?, environment: RoundEnvironment): Boolean {
+  override fun process(annotations: MutableSet<out TypeElement>?,
+    environment: RoundEnvironment): Boolean {
 
     // Print a message that annotation processor started.
     processingEnv.messager.noteMessage { "Ktx Prefs Annotation Processor had started." }
@@ -90,14 +91,15 @@ class PrefsProcessor : AbstractProcessor() {
     }
 
     // Check whether Kotlin files target directory is accessible.
-    val kaptTargetDirectory = processingEnv.options[ProcessorConfiguration.OPTION_KAPT_KOTLIN] ?: run {
+    val kaptTargetDirectory = processingEnv.options[ProcessorConfiguration.OPTION_KAPT_KOTLIN]
+      ?: run {
 
-      // Log an error message.
-      processingEnv.messager.errorMessage { "Cannot access Kotlin files target directory." }
+        // Log an error message.
+        processingEnv.messager.errorMessage { "Cannot access Kotlin files target directory." }
 
-      // Stop processing in case if an error occurred.
-      return true
-    }
+        // Stop processing in case if an error occurred.
+        return true
+      }
 
     annotations.forEach { annotation ->
 
@@ -159,7 +161,8 @@ class PrefsProcessor : AbstractProcessor() {
           // Retrieve reactive meta information.
           val variableReactive = variableElement.getAnnotation(Reactive::class.java)
           val enableReactive = variableReactive?.value ?: classEnableReactive ?: true
-          val distinctUntilChanged = variableReactive?.distinctUntilChanged ?: classDistinctUntilChanged ?: true
+          val distinctUntilChanged = variableReactive?.distinctUntilChanged
+            ?: classDistinctUntilChanged ?: true
 
           // Create a field preference descriptor.
           val preference = Pref(
@@ -204,12 +207,14 @@ class PrefsProcessor : AbstractProcessor() {
 
         // Make directory for generated files.
         val packageDirectory = File(
-          kaptTargetDirectory.replace(ProcessorConfiguration.SRC_KAPT_KOTLIN, ProcessorConfiguration.SRC_KAPT),
+          kaptTargetDirectory.replace(ProcessorConfiguration.SRC_KAPT_KOTLIN,
+            ProcessorConfiguration.SRC_KAPT),
           getPackagePath(packageElement))
           .also { it.mkdirs() }
 
         // Create shared preferences wrapper extensions.
-        File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.EXTENSION}.kt").apply {
+        File(packageDirectory,
+          "${classElement.simpleName}${SuffixConfiguration.EXTENSION}.kt").apply {
           writer(Charset.defaultCharset())
             .use { writer ->
               val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.EXTENSIONS)
@@ -218,7 +223,8 @@ class PrefsProcessor : AbstractProcessor() {
         }
 
         // Create shared preferences wrapper.
-        File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.PREFS_WRAPPER}.kt").apply {
+        File(packageDirectory,
+          "${classElement.simpleName}${SuffixConfiguration.PREFS_WRAPPER}.kt").apply {
           writer(Charset.defaultCharset())
             .use { writer ->
               val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.PREFS_WRAPPER)
@@ -227,7 +233,8 @@ class PrefsProcessor : AbstractProcessor() {
         }
 
         // Create editor wrapper.
-        File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.EDITOR_WRAPPER}.kt").apply {
+        File(packageDirectory,
+          "${classElement.simpleName}${SuffixConfiguration.EDITOR_WRAPPER}.kt").apply {
           writer(Charset.defaultCharset())
             .use { writer ->
               val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.EDITOR_WRAPPER)
@@ -236,7 +243,8 @@ class PrefsProcessor : AbstractProcessor() {
         }
 
         // Create constants file that uses the following arguments.
-        File(packageDirectory, "${classElement.simpleName}${SuffixConfiguration.CONSTANTS}.kt").apply {
+        File(packageDirectory,
+          "${classElement.simpleName}${SuffixConfiguration.CONSTANTS}.kt").apply {
           writer(Charset.defaultCharset())
             .use { writer ->
               val template = freemarkerConfiguration.getTemplate(FreemarkerTemplate.CONSTANTS)
@@ -258,7 +266,8 @@ class PrefsProcessor : AbstractProcessor() {
   private fun getPreferenceName(fieldName: String, fieldNameAnnotation: Name?): String? =
     fieldNameAnnotation?.value ?: fieldName
 
-  private fun getPreferenceDefault(variableElement: VariableElement, fieldType: TypeMirror): String? {
+  private fun getPreferenceDefault(variableElement: VariableElement,
+    fieldType: TypeMirror): String? {
 
     // Parse for Boolean.
     variableElement.getAnnotation(DefaultBoolean::class.java)?.let {
@@ -296,7 +305,7 @@ class PrefsProcessor : AbstractProcessor() {
     variableElement.getAnnotation(DefaultString::class.java)?.let {
       return when (isAnnotationSupported(STRING, fieldType)) {
         false -> null
-        true -> "\"${escapeJava(it.value)}\""
+        true -> "\"${StringEscapeUtils.escapeJava(it.value)}\""
       }
     }
 

@@ -23,8 +23,7 @@ dependencies {
   //region Miscellaneous
 
   implementation deps.template.freemarker
-  implementation deps.misc.commons_io
-  implementation deps.misc.commons_lang
+  implementation deps.misc.commons_text
 
   //endregion
 }
