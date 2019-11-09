@@ -8,16 +8,16 @@ ext.deps = deps
 //region Versions
 
 def versions = [:]
-versions.android_gradle_plugin = "3.5.0"
+versions.android_gradle_plugin = "3.5.2"
 versions.android_runtime = "4.1.1.4"
 versions.androidx_constraintlayout = "1.1.3"
 versions.commons_text = "1.8"
-versions.dagger = "2.24"
+versions.dagger = "2.25.2"
 versions.freemarker = "2.3.29"
-versions.javax_annotation = "1"
+versions.javax = "1"
 versions.kotlin = "1.3.50"
 versions.material = "1.0.0"
-versions.rx_java = "2.2.12"
+versions.rx_java = "2.2.14"
 versions.rx_kotlin = "2.4.0"
 deps.versions = versions
 
@@ -28,6 +28,15 @@ deps.versions = versions
 def android = [:]
 android.runtime = "com.google.android:android:$versions.android_runtime"
 deps.android = android
+
+//endregion
+
+//region Androidx
+
+def androidx = [:]
+androidx.constraintlayout =
+    "androidx.constraintlayout:constraintlayout:$versions.androidx_constraintlayout"
+deps.androidx = androidx
 
 //endregion
 
@@ -81,15 +90,6 @@ def rx = [:]
 rx.java = "io.reactivex.rxjava2:rxjava:$versions.rx_java"
 rx.kotlin = "io.reactivex.rxjava2:rxkotlin:$versions.rx_kotlin"
 deps.rx = rx
-
-//endregion
-
-//region Support / Androidx
-
-def androidx = [:]
-androidx.constraintlayout =
-    "androidx.constraintlayout:constraintlayout:$versions.androidx_constraintlayout"
-deps.androidx = androidx
 
 //endregion
 
