@@ -59,25 +59,20 @@ android {
 
 dependencies {
 
-  //region Annotation Processors
-
-  kapt project(":ktx-prefs-compiler")
-  kapt deps.dagger.compiler
-  kapt deps.dagger.android_processor
-
-  //endregion
-
   //region Application Modules
 
   implementation project(":ktx-prefs")
+  kapt project(":ktx-prefs-compiler")
 
   //endregion
 
   //region Dependency Injection
 
   implementation deps.dagger.android
+  kapt deps.dagger.android_processor
   implementation deps.dagger.android_support
   compileOnly deps.dagger.annotation
+  kapt deps.dagger.compiler
   implementation deps.dagger.runtime
 
   //endregion
