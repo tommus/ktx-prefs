@@ -43,7 +43,6 @@ import javax.lang.model.util.ElementFilter
     "co.windly.ktxprefs.annotation.DefaultInt",
     "co.windly.ktxprefs.annotation.DefaultLong",
     "co.windly.ktxprefs.annotation.DefaultString",
-    "co.windly.ktxprefs.annotation.Mode",
     "co.windly.ktxprefs.annotation.Name",
     "co.windly.ktxprefs.annotation.Prefs",
     "co.windly.ktxprefs.annotation.Reactive"
