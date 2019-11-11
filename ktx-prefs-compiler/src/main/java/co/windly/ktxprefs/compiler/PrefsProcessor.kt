@@ -142,7 +142,7 @@ class PrefsProcessor : AbstractProcessor() {
 
             // Print an error message.
             processingEnv.messager
-              .errorMessage { "Processed class contains file type ($fieldType) which is not supported." }
+              .errorMessage { "Processed class contains field type ($fieldType) which is not supported." }
 
             // Halt the annotation processor.
             return true

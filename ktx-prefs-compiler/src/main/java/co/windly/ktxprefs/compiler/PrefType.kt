@@ -110,7 +110,7 @@ enum class PrefType constructor(
       // Retrieve type for given qualified type.
       val type = Arrays
         .stream(values())
-        .filter { it -> it.qualifiedName == qualifiedName }
+        .filter { it.qualifiedName == qualifiedName }
         .findFirst()
 
       // Return type for given type.
@@ -134,7 +134,7 @@ enum class PrefType constructor(
       // Return an information whether given type is supported.
       return Arrays
         .stream(values())
-        .anyMatch { it -> it.qualifiedName == qualifiedName }
+        .anyMatch { it.qualifiedName == qualifiedName }
     }
 
     val allowedTypes: String?
