@@ -120,7 +120,7 @@ class PrefsProcessor : AbstractProcessor() {
         val classEnableReactive = classReactive?.value ?: true
         val classDistinctUntilChanged = classReactive?.distinctUntilChanged ?: true
 
-        // Prepare preferences contains.
+        // Prepare preferences collection.
         val prefList = mutableListOf<Pref>()
 
         // Iterate over the fields of given class.
