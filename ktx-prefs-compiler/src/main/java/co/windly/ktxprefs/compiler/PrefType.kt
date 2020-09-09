@@ -137,13 +137,6 @@ enum class PrefType constructor(
         .anyMatch { it.qualifiedName == qualifiedName }
     }
 
-    val allowedTypes: String?
-      get() = Arrays
-        .stream(values())
-        .map { it.qualifiedName }
-        .reduce { first: String?, second: String? -> first + second }
-        .orElse(null)
-
     //endregion
   }
 
