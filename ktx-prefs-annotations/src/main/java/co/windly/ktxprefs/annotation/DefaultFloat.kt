@@ -1,10 +1,11 @@
 package co.windly.ktxprefs.annotation
 
 /**
- * Indicates a wrapper methods for given Float preference should be generated.
+ * Indicates a wrapper methods for given Float preference should be
+ * generated.
  * <p>
- * One can configure what default value will be used in case if given property was
- * not set previously,
+ * One can configure what default value will be used in case if given
+ * property was not set previously.
  */
 @Target(AnnotationTarget.FIELD)
 annotation class DefaultFloat(
