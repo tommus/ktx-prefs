@@ -14,7 +14,7 @@ package co.windly.ktxprefs.annotation
  *  configuration will be overridden at field level.</dd>
  *  <dt>Property:</dt>
  *  <dd>At this level, the configuration will be applied only to
- *  given field. It overrides behavior applied at class level</dd>
+ *  given field. It overrides behavior applied at class level.</dd>
  * </dl>
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FIELD)
@@ -24,7 +24,7 @@ annotation class Reactive(
    * Disable / enable generation of extension method.
    *
    * @return information whether extension methods should be
-   * generated or not.
+   * generated (or not).
    */
   val value: Boolean = true,
 
