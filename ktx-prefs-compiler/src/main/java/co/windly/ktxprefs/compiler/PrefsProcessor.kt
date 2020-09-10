@@ -201,6 +201,9 @@ class PrefsProcessor : AbstractProcessor() {
         arguments["constantsClassName"] = "${classElement.simpleName}${SuffixConfiguration.CONSTANTS}"
         arguments["extensionClassName"] = "${classElement.simpleName}"
 
+        // Inject class level information whether to enable reactive extensions.
+        arguments["enableReactive"] = classEnableReactive
+
         // Prepare preferences list.
         arguments["prefList"] = prefList
 

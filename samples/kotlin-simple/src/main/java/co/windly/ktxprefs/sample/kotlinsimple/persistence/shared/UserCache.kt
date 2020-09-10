@@ -8,8 +8,8 @@ import co.windly.ktxprefs.annotation.DefaultString
 import co.windly.ktxprefs.annotation.Prefs
 import co.windly.ktxprefs.annotation.Reactive
 
-@Prefs(value = "UserCachePreferences")
 @Reactive(value = false)
+@Prefs(value = "UserCachePreferences")
 class UserCache(
 
   //region Id

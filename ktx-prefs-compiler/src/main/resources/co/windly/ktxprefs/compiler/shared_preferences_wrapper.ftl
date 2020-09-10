@@ -3,11 +3,13 @@ package ${package};
 import android.content.Context
 import android.content.SharedPreferences
 import co.windly.ktxprefs.runtime.SharedPreferencesWrapper
+<#if enableReactive>
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
+</#if>
 
 <#if comment??>
 /**
@@ -56,11 +58,13 @@ open class ${prefWrapperClassName}(wrapped: SharedPreferences) : SharedPreferenc
   override fun clear() {
     edit().clear().apply()
   }
+  <#if enableReactive>
 
   fun clearRx(): Completable =
       Completable
           .defer { Completable.fromAction { clear() } }
           .subscribeOn(Schedulers.io())
+  </#if>
 
   //endregion
 <#list prefList as pref>

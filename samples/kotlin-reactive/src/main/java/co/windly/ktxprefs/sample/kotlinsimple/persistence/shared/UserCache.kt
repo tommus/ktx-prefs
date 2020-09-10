@@ -6,7 +6,9 @@ import co.windly.ktxprefs.annotation.DefaultInt
 import co.windly.ktxprefs.annotation.DefaultLong
 import co.windly.ktxprefs.annotation.DefaultString
 import co.windly.ktxprefs.annotation.Prefs
+import co.windly.ktxprefs.annotation.Reactive
 
+@Reactive(value = true)
 @Prefs(value = "UserCachePreferences")
 class UserCache(
 
