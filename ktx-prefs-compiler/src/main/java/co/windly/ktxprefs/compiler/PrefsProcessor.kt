@@ -8,6 +8,7 @@ import co.windly.ktxprefs.annotation.DefaultString
 import co.windly.ktxprefs.annotation.Name
 import co.windly.ktxprefs.annotation.Prefs
 import co.windly.ktxprefs.annotation.Reactive
+import co.windly.ktxprefs.annotation.Suspend
 import co.windly.ktxprefs.compiler.PrefType.BOOLEAN
 import co.windly.ktxprefs.compiler.PrefType.FLOAT
 import co.windly.ktxprefs.compiler.PrefType.INTEGER
@@ -45,7 +46,8 @@ import javax.lang.model.util.ElementFilter
     "co.windly.ktxprefs.annotation.DefaultString",
     "co.windly.ktxprefs.annotation.Name",
     "co.windly.ktxprefs.annotation.Prefs",
-    "co.windly.ktxprefs.annotation.Reactive"
+    "co.windly.ktxprefs.annotation.Reactive",
+    "co.windly.ktxprefs.annotation.Suspend"
   ]
 )
 @SupportedOptions(value = [ProcessorConfiguration.OPTION_KAPT_KOTLIN])
@@ -120,6 +122,10 @@ class PrefsProcessor : AbstractProcessor() {
         val classEnableReactive = classReactive?.value ?: true
         val classDistinctUntilChanged = classReactive?.distinctUntilChanged ?: true
 
+        // Retrieve a class suspend meta information.
+        val classSuspend = classElement.getAnnotation(Suspend::class.java)
+        val classEnableSuspend = classSuspend?.value ?: true
+
         // Prepare preferences collection.
         val prefList = mutableListOf<Pref>()
 
@@ -163,6 +169,10 @@ class PrefsProcessor : AbstractProcessor() {
           val distinctUntilChanged = variableReactive?.distinctUntilChanged
             ?: classDistinctUntilChanged ?: true
 
+          // Retrieve suspend meta information.
+          val variableSuspend = variableElement.getAnnotation(Suspend::class.java)
+          val enableSuspend = variableSuspend?.value ?: classEnableSuspend ?: true
+
           // Create a field preference descriptor.
           val preference = Pref(
             fieldName = fieldName,
@@ -171,6 +181,7 @@ class PrefsProcessor : AbstractProcessor() {
             defaultValue = preferenceDefault,
             comment = fieldComment,
             enableReactive = enableReactive,
+            enableSuspend = enableSuspend,
             distinctUntilChanged = distinctUntilChanged
           )
 
@@ -203,6 +214,9 @@ class PrefsProcessor : AbstractProcessor() {
 
         // Inject class level information whether to enable reactive extensions.
         arguments["enableReactive"] = classEnableReactive
+
+        // Inject class level information whether to enable suspend extensions.
+        arguments["enableSuspend"] = classEnableSuspend
 
         // Prepare preferences list.
         arguments["prefList"] = prefList
@@ -333,24 +347,32 @@ class PrefsProcessor : AbstractProcessor() {
   //region Template Processor Configuration
 
   private object FreemarkerConfiguration {
-
     const val MAJOR_VERSION = 2
-
     const val MINOR_VERSION = 3
-
-    const val MICRO_VERSION = 28
-
+    const val MICRO_VERSION = 30
     const val BASE_PACKAGE_PATH = ""
   }
 
   private object FreemarkerTemplate {
 
+    /**
+     * Extensions template's filename.
+     */
     const val EXTENSIONS = "extensions.ftl"
 
+    /**
+     * Shared preferences wrapper template's filename.
+     */
     const val PREFS_WRAPPER = "shared_preferences_wrapper.ftl"
 
+    /**
+     * Editor wrapper template's filename.
+     */
     const val EDITOR_WRAPPER = "editor_wrapper.ftl"
 
+    /**
+     * Constants template's filename.
+     */
     const val CONSTANTS = "constants.ftl"
   }
 
