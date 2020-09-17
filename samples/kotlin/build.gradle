@@ -54,6 +54,13 @@ android {
 
 dependencies {
 
+  //region AndroidX
+
+  implementation deps.androidx.lifecycle_runtime_ktx
+  implementation deps.androidx.constraintlayout
+
+  //endregion
+
   //region Application Modules
 
   implementation project(":ktx-prefs")
@@ -87,12 +94,6 @@ dependencies {
   //region Reactive Extensions
 
   implementation deps.rx.kotlin
-
-  //endregion
-
-  //region Support / Androidx
-
-  implementation deps.androidx.constraintlayout
 
   //endregion
 }

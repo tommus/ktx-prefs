@@ -6,6 +6,12 @@ import co.windly.ktxprefs.sample.kotlin.R.layout
 import co.windly.ktxprefs.sample.kotlin.persistence.shared.cache.UserCache
 import dagger.android.AndroidInjection
 import dagger.android.DaggerActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class CoroutineActivity : DaggerActivity() {
@@ -32,6 +38,13 @@ class CoroutineActivity : DaggerActivity() {
     initializeUserCache()
   }
 
+  override fun onDestroy() {
+    super.onDestroy()
+
+    // Cancel all coroutines when activity is about to be destroyed.
+    activityScope.cancel()
+  }
+
   //endregion
 
   //region Initialize Cache
@@ -39,43 +52,54 @@ class CoroutineActivity : DaggerActivity() {
   @Inject
   lateinit var cache: UserCache
 
+  private val activityScope: CoroutineScope =
+    CoroutineScope(Job() + Dispatchers.Main)
+
   private fun initializeUserCache() {
 
-    // Put a single value (apply() is automatically called).
-    cache
-      .putId(1L)
+    // TODO:
+    // Put a single value (apply() is automatically called) in a blocking manner.
+    runBlocking { cache.putSuspendedId(1L) }
 
-    // Put several values in one transaction.
-    cache
-      .edit()
-      .putFirstName("John")
-      .putLastName("Snow")
-      .putPassword("WinterIsComing")
-      .putActive(true)
-      .commit()
+    activityScope.launch {
 
-    // Check if a value is set.
-    if (cache.containsFirstName()) {
-      Log.d(TAG, "First name is set.")
+      // Put several values at once.
+      cache
+        .putSuspendedFirstName("John")
+        .putSuspendedLastName("Snow")
+        .putSuspendedPassword("WinterIsComing")
+        .putSuspendedActive(true)
+
+      // Retrieve a shared preference value from suspended method.
+      val active =
+        cache.containsSuspendedActive()
+
+      // Check if a value is set.
+      if (active) {
+        Log.d(TAG, "First name is set.")
+      }
+
+      // Access preferences one by one.
+      with(cache) {
+        Log.d(TAG, "id -> ${getSuspendedId()}.")
+        Log.d(TAG, "first name -> ${getSuspendedFirstName()}.")
+        Log.d(TAG, "last name -> ${getSuspendedLastName()}.")
+        Log.d(TAG, "password -> ${getSuspendedPassword()}.")
+        Log.d(TAG, "active -> ${isSuspendedActive()}.")
+      }
     }
 
-    // Access preferences one by one.
-    with(cache) {
-      Log.d(TAG, "id -> ${getId()}.")
-      Log.d(TAG, "first name -> ${getFirstName()}.")
-      Log.d(TAG, "last name -> ${getLastName()}.")
-      Log.d(TAG, "password -> ${getPassword()}.")
-      Log.d(TAG, "active -> ${isActive()}.")
-    }
-
+    // TODO:
     // Access all preferences.
     Log.d(TAG, "cache -> ${cache.all}.")
 
+    // TODO:
     // Remove a value.
-    cache.removeFirstName()
+    runBlocking { cache.removeSuspendedFirstName() }
 
+    // TODO:
     // Clear all preferences.
-    cache.clear()
+    runBlocking { cache.clearSuspended() }
   }
 
   //endregion

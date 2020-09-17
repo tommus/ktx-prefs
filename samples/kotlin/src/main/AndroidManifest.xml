@@ -20,15 +20,15 @@
     <!-- region Activities -->
 
     <activity
-      android:name=".presentation.coroutine.CoroutineActivity" />
-
-    <activity
-      android:name=".presentation.reactive.ReactiveActivity">
+      android:name=".presentation.coroutine.CoroutineActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
         <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
+
+    <activity
+      android:name=".presentation.reactive.ReactiveActivity" />
 
     <activity
       android:name=".presentation.simple.SimpleActivity" />
