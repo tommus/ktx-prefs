@@ -10,7 +10,9 @@ ext.deps = deps
 def versions = [:]
 versions.android_gradle_plugin = "4.0.1"
 versions.android_runtime = "4.1.1.4"
+versions.androidx_activity_ktx = "1.1.0"
 versions.androidx_constraintlayout = "2.0.1"
+versions.androidx_lifecycle_extensions = "2.2.0"
 versions.androidx_lifecycle_runtime_ktx = "2.2.0"
 versions.commons_text = "1.8"
 versions.dagger = "2.29.1"
@@ -36,8 +38,11 @@ deps.android = android
 //region Androidx
 
 def androidx = [:]
+androidx.activity_ktx = "androidx.activity:activity-ktx:${versions.androidx_activity_ktx}"
 androidx.constraintlayout =
     "androidx.constraintlayout:constraintlayout:$versions.androidx_constraintlayout"
+androidx.lifecycle_extensions =
+    "androidx.lifecycle:lifecycle-extensions:${versions.androidx_lifecycle_extensions}"
 androidx.lifecycle_runtime_ktx =
     "androidx.lifecycle:lifecycle-runtime-ktx:$versions.androidx_lifecycle_runtime_ktx"
 deps.androidx = androidx

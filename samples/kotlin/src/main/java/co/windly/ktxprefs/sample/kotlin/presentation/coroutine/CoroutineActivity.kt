@@ -2,7 +2,7 @@ package co.windly.ktxprefs.sample.kotlin.presentation.coroutine
 
 import android.os.Bundle
 import android.util.Log
-import co.windly.ktxprefs.sample.kotlin.R.layout
+import co.windly.ktxprefs.sample.kotlin.R
 import co.windly.ktxprefs.sample.kotlin.persistence.shared.cache.UserCache
 import dagger.android.AndroidInjection
 import dagger.android.DaggerActivity
@@ -32,7 +32,7 @@ class CoroutineActivity : DaggerActivity() {
     AndroidInjection.inject(this)
 
     super.onCreate(savedInstanceState)
-    setContentView(layout.activity_main)
+    setContentView(R.layout.activity_main)
 
     // Initialize cache.
     initializeUserCache()

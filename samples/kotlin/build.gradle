@@ -12,6 +12,10 @@ android {
 
   //region Build Configuration
 
+  buildFeatures {
+    dataBinding = true
+  }
+
   buildTypes {
     debug {
       useProguard false
@@ -35,6 +39,11 @@ android {
 
   compileSdkVersion deps.build_versions.compile_sdk
 
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
+
   //endregion
 
   //region Default Config
@@ -42,7 +51,15 @@ android {
   defaultConfig {
     minSdkVersion deps.build_versions.min_sdk
     targetSdkVersion deps.build_versions.target_sdk
-    applicationId "co.windly.ktxprefs.sample.kotlinsimple"
+    applicationId "co.windly.ktxprefs.sample"
+  }
+
+  //endregion
+
+  //region Kotlin Config
+
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
   }
 
   //endregion
@@ -56,8 +73,10 @@ dependencies {
 
   //region AndroidX
 
-  implementation deps.androidx.lifecycle_runtime_ktx
+  implementation deps.androidx.activity_ktx
   implementation deps.androidx.constraintlayout
+  implementation deps.androidx.lifecycle_extensions
+  implementation deps.androidx.lifecycle_runtime_ktx
 
   //endregion
 

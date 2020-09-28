@@ -2,11 +2,19 @@
 
 <resources>
 
-  <eat-comment/>
+  <eat-comment />
 
   <!-- region Application -->
 
-  <string name="app_name">Ktx Preferences Kotlin Simple</string>
+  <string name="app_name">Ktx Preferences</string>
+
+  <!-- endregion -->
+
+  <!-- region Alphabetical -->
+
+  <string name="coroutine">Coroutine</string>
+  <string name="reactive">Reactive</string>
+  <string name="simple">Simple</string>
 
   <!-- endregion -->
 
