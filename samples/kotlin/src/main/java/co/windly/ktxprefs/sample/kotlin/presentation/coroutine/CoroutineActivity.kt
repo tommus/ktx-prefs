@@ -56,7 +56,6 @@ class CoroutineActivity : DaggerActivity() {
 
   private fun initializeUserCache() {
 
-    // TODO:
     // Put a single value (apply() is automatically called) in a blocking manner.
     runBlocking { cache.putSuspendedId(1L) }
 
@@ -92,15 +91,12 @@ class CoroutineActivity : DaggerActivity() {
     // Wait until job will be completed before the app will continue.
     runBlocking { job.join() }
 
-    // TODO:
     // Access all preferences.
     Log.d(TAG, "cache -> ${cache.all}.")
 
-    // TODO:
     // Remove a value.
     runBlocking { cache.removeSuspendedFirstName() }
 
-    // TODO:
     // Clear all preferences.
     runBlocking { cache.clearSuspended() }
   }
