@@ -7,7 +7,6 @@ import co.windly.ktxprefs.sample.kotlin.persistence.shared.cache.UserCache
 import dagger.android.AndroidInjection
 import dagger.android.DaggerActivity
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -53,7 +52,7 @@ class CoroutineActivity : DaggerActivity() {
   lateinit var cache: UserCache
 
   private val activityScope: CoroutineScope =
-    CoroutineScope(Job() + Dispatchers.Main)
+    CoroutineScope(Job())
 
   private fun initializeUserCache() {
 
@@ -61,7 +60,8 @@ class CoroutineActivity : DaggerActivity() {
     // Put a single value (apply() is automatically called) in a blocking manner.
     runBlocking { cache.putSuspendedId(1L) }
 
-    activityScope.launch {
+    // Schedule update within a job.
+    val job = activityScope.launch {
 
       // Put several values at once.
       cache
@@ -88,6 +88,9 @@ class CoroutineActivity : DaggerActivity() {
         Log.d(TAG, "active -> ${isSuspendedActive()}.")
       }
     }
+
+    // Wait until job will be completed before the app will continue.
+    runBlocking { job.join() }
 
     // TODO:
     // Access all preferences.
