@@ -9,12 +9,8 @@ include ":ktx-prefs-runtime"
 
 //region Samples
 
-include ":kotlin-dagger"
-include ":kotlin-reactive"
-include ":kotlin-simple"
+include ":kotlin"
 
-project(":kotlin-dagger").projectDir = new File(rootDir, "samples/kotlin-dagger")
-project(":kotlin-reactive").projectDir = new File(rootDir, "samples/kotlin-reactive")
-project(":kotlin-simple").projectDir = new File(rootDir, "samples/kotlin-simple")
+project(":kotlin").projectDir = new File(rootDir, "samples/kotlin")
 
 //endregion

@@ -34,15 +34,17 @@ class Pref internal constructor(
 
   //endregion
 
-  //region Enable Reactive
+  //region Reactive
 
   val enableReactive: Boolean = true,
 
+  val distinctUntilChanged: Boolean = true,
+
   //endregion
 
-  //region Distinct Until Changed
+  //region Suspend
 
-  val distinctUntilChanged: Boolean = true
+  val enableSuspend: Boolean = true
 
   //endregion
 
@@ -66,6 +68,7 @@ class Pref internal constructor(
       .append("comment", comment)
       .append("enableReactive", enableReactive)
       .append("distinctUntilChanged", distinctUntilChanged)
+      .append("enableSuspend", enableSuspend)
       .toString()
   }
 

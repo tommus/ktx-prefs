@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+  <eat-comment />
+
+  <!-- region Application -->
+
+  <string name="app_name">Ktx Preferences</string>
+
+  <!-- endregion -->
+
+  <!-- region Alphabetical -->
+
+  <string name="coroutine">Coroutine</string>
+  <string name="reactive">Reactive</string>
+  <string name="simple">Simple</string>
+
+  <!-- endregion -->
+
+</resources>

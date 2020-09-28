@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+  xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <!-- region Binding -->
+
+  <data>
+
+    <variable
+      name="viewModel"
+      type="co.windly.ktxprefs.sample.kotlin.presentation.menu.MenuViewModel" />
+
+  </data>
+
+  <!-- endregion -->
+
+  <!-- region Root -->
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <com.google.android.material.button.MaterialButton
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:minHeight="56dp"
+      android:onClick="@{() -> viewModel.onCoroutineClicked()}"
+      android:text="@string/coroutine" />
+
+    <com.google.android.material.button.MaterialButton
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:minHeight="56dp"
+      android:onClick="@{() -> viewModel.onReactiveClicked()}"
+      android:text="@string/reactive" />
+
+    <com.google.android.material.button.MaterialButton
+      style="@style/Widget.MaterialComponents.Button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:minHeight="56dp"
+      android:onClick="@{() -> viewModel.onSimpleClicked()}"
+      android:text="@string/simple" />
+
+  </LinearLayout>
+
+  <!-- endregion -->
+
+</layout>

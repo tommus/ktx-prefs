@@ -1,0 +1,120 @@
+//region Startup Plugins
+
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-kapt"
+
+//endregion
+
+//region Android
+
+android {
+
+  //region Build Configuration
+
+  buildFeatures {
+    dataBinding = true
+  }
+
+  buildTypes {
+    debug {
+      useProguard false
+      minifyEnabled false
+      shrinkResources false
+      proguardFiles getDefaultProguardFile("proguard-android.txt"),
+          "proguard-rules.pro"
+    }
+    release {
+      useProguard true
+      minifyEnabled true
+      shrinkResources true
+      proguardFiles getDefaultProguardFile("proguard-android.txt"),
+          "proguard-rules.pro"
+    }
+  }
+
+  //endregion
+
+  //region Compile Options
+
+  compileSdkVersion deps.build_versions.compile_sdk
+
+  compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+  }
+
+  //endregion
+
+  //region Default Config
+
+  defaultConfig {
+    minSdkVersion deps.build_versions.min_sdk
+    targetSdkVersion deps.build_versions.target_sdk
+    applicationId "co.windly.ktxprefs.sample"
+  }
+
+  //endregion
+
+  //region Kotlin Config
+
+  kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_1_8.toString()
+  }
+
+  //endregion
+}
+
+//endregion
+
+//region Dependencies
+
+dependencies {
+
+  //region AndroidX
+
+  implementation deps.androidx.activity_ktx
+  implementation deps.androidx.constraintlayout
+  implementation deps.androidx.lifecycle_extensions
+  implementation deps.androidx.lifecycle_runtime_ktx
+
+  //endregion
+
+  //region Application Modules
+
+  implementation project(":ktx-prefs")
+  kapt project(":ktx-prefs-compiler")
+
+  //endregion
+
+  //region Dependency Injection
+
+  implementation deps.dagger.android
+  kapt deps.dagger.android_processor
+  implementation deps.dagger.android_support
+  compileOnly deps.dagger.annotation
+  kapt deps.dagger.compiler
+  implementation deps.dagger.runtime
+
+  //endregion
+
+  //region Kotlin
+
+  implementation deps.kotlin.stdlib_jdk8
+
+  //endregion
+
+  //region Material
+
+  implementation deps.ui.material
+
+  //endregion
+
+  //region Reactive Extensions
+
+  implementation deps.rx.kotlin
+
+  //endregion
+}
+
+//endregion

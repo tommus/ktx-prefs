@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+  <eat-comment />
+
+  <!-- region Theme -->
+
+  <style name="Theme" />
+
+  <style name="Theme.KtxPreferences" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+  </style>
+
+  <!-- endregion -->
+
+</resources>
